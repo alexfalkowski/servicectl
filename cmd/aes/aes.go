@@ -3,6 +3,7 @@ package aes
 import (
 	"github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/crypto/aes"
+	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/marshaller"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/cmd/runner"
@@ -11,8 +12,8 @@ import (
 	"go.uber.org/zap"
 )
 
-// Rotate the keys.
-var Rotate = cmd.Bool()
+// RotateFlag defines wether we should rotate keys or not.
+var RotateFlag = flags.Bool()
 
 // RunCommandParams for AES.
 type RunCommandParams struct {
@@ -27,7 +28,7 @@ type RunCommandParams struct {
 
 // RunCommand for AES.
 func RunCommand(params RunCommandParams) {
-	if !*Rotate {
+	if !*RotateFlag {
 		return
 	}
 
