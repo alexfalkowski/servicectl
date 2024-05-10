@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+package service.v1;
+
+// Service that does nothing.
+service Service {}
