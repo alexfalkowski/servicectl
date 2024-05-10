@@ -1,4 +1,4 @@
-package cmd
+package aes
 
 import (
 	"github.com/alexfalkowski/go-service/compressor"
@@ -7,15 +7,14 @@ import (
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/go-service/telemetry"
 	"github.com/alexfalkowski/go-service/telemetry/metrics"
-	"github.com/alexfalkowski/servicectl/client"
 	"github.com/alexfalkowski/servicectl/config"
 	"go.uber.org/fx"
 )
 
-// ClientOptions for cmd.
-var ClientOptions = []fx.Option{
+// Module for fx.
+var Module = fx.Options(
 	runtime.Module, crypto.Module,
 	compressor.Module, marshaller.Module,
 	telemetry.Module, metrics.Module,
-	config.Module, client.Module, Module,
-}
+	config.Module, fx.Invoke(RunCommand),
+)
