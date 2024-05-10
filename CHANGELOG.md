@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [v0.1.1](https://github.com/alexfalkowski/servicectl/releases/tag/v0.1.1) - 2024-05-10
+
+- [`6382fd4`](https://github.com/alexfalkowski/servicectl/commit/6382fd4c7f5e73ebdedeb88ce3634d427e9d8be6) fix(crypto): add module (#3)
+
 ## [v0.1.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.1.0) - 2024-05-10
 
 - [`07052af`](https://github.com/alexfalkowski/servicectl/commit/07052af5faaae40d7d0b9a9b5640ff23e05fa462) feat(init): init servicectl (#1)
