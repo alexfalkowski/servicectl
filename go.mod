@@ -1,4 +1,4 @@
-module github.com/alexfalkowski/go-client-template
+module github.com/alexfalkowski/servicectl
 
 go 1.22.3
 

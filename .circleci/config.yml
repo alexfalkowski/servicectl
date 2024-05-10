@@ -4,7 +4,7 @@ jobs:
   build-client:
     docker:
       - image: alexfalkowski/go:1.22-ruby
-    working_directory: ~/go-client-template
+    working_directory: ~/servicectl
     steps:
       - checkout
       - run: git submodule sync
@@ -12,35 +12,35 @@ jobs:
       - restore_cache:
           name: restore go deps
           keys:
-            - go-client-template-go-cache-{{ checksum "go.sum" }}
-            - go-client-template-go-cache-
+            - servicectl-go-cache-{{ checksum "go.sum" }}
+            - servicectl-go-cache-
       - restore_cache:
           name: restore ruby deps
           keys:
-            - go-client-template-ruby-cache-{{ checksum "test/Gemfile.lock" }}
-            - go-client-template-ruby-cache-
+            - servicectl-ruby-cache-{{ checksum "test/Gemfile.lock" }}
+            - servicectl-ruby-cache-
       - run: make dep
       - save_cache:
           name: save go deps
-          key: go-client-template-go-cache-{{ checksum "go.sum" }}
+          key: servicectl-go-cache-{{ checksum "go.sum" }}
           paths:
             - /home/circleci/go/pkg/mod
       - save_cache:
           name: save ruby deps
-          key: go-client-template-ruby-cache-{{ checksum "test/Gemfile.lock" }}
+          key: servicectl-ruby-cache-{{ checksum "test/Gemfile.lock" }}
           paths:
             - test/vendor
       - restore_cache:
           name: restore go build cache
           keys:
-            - go-client-template-go-build-cache-{{ checksum "go.sum" }}
-            - go-client-template-go-build-cache-
+            - servicectl-go-build-cache-{{ checksum "go.sum" }}
+            - servicectl-go-build-cache-
       - run: make lint
       - run: make sec
       - run: make features
       - save_cache:
           name: save go build cache
-          key: go-client-template-go-build-cache-{{ checksum "go.sum" }}
+          key: servicectl-go-build-cache-{{ checksum "go.sum" }}
           paths:
             - /home/circleci/.cache/go-build
       - run: make coverage
@@ -53,7 +53,7 @@ jobs:
   build-docker:
     docker:
       - image: alexfalkowski/go:1.22-ruby
-    working_directory: ~/go-client-template
+    working_directory: ~/servicectl
     steps:
       - checkout
       - run: git submodule sync
@@ -65,7 +65,7 @@ jobs:
   release:
     docker:
       - image: alexfalkowski/release:3.1
-    working_directory: ~/go-client-template
+    working_directory: ~/servicectl
     steps:
       - checkout
       - run: git submodule sync
@@ -75,7 +75,7 @@ jobs:
   push-docker:
     docker:
       - image: alexfalkowski/go:1.22-ruby
-    working_directory: ~/go-client-template
+    working_directory: ~/servicectl
     steps:
       - checkout
       - run: git submodule sync
@@ -88,7 +88,7 @@ jobs:
     resource_class: large
 
 workflows:
-  go-client-template:
+  servicectl:
     jobs:
       - build-client
       - build-docker

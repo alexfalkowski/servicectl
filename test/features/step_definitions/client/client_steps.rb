@@ -4,7 +4,7 @@ When('we run the client') do
   env = {
     'CONFIG_FILE' => '.config/client.yml'
   }
-  cmd = Nonnative.go_executable(%w[cover], 'reports', '../go-client-template', 'client')
+  cmd = Nonnative.go_executable(%w[cover], 'reports', '../servicectl', 'client')
   pid = spawn(env, cmd, %i[out err] => ['reports/client.log', 'a'])
 
   _, @status = Process.waitpid2(pid)
