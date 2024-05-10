@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/alexfalkowski/go-client-template.svg?style=svg)](https://circleci.com/gh/alexfalkowski/go-client-template)
+[![CircleCI](https://circleci.com/gh/alexfalkowski/servicectl.svg?style=svg)](https://circleci.com/gh/alexfalkowski/servicectl)
 
 # Client
 
