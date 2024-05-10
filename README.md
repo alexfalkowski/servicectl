@@ -24,6 +24,78 @@ Add anything interesting about the design.
 
 Describe any other similar systems you took inspiration from.
 
+### AES
+
+```sh
+❯ ./servicectl aes --help
+AES crypto.
+
+Usage:
+  servicectl aes [flags]
+
+Flags:
+  -h, --help            help for aes
+  -o, --output string   output config location (format kind:location, default env:AES_CONFIG_FILE) (default "env:AES_CONFIG_FILE")
+  -r, --rotate          rotate keys
+
+Global Flags:
+  -i, --input string   input config location (format kind:location, default env:CONFIG_FILE) (default "env:CONFIG_FILE")
+```
+
+### AES
+
+```sh
+❯ ./servicectl aes --help
+AES crypto.
+
+Usage:
+  servicectl aes [flags]
+
+Flags:
+  -h, --help            help for aes
+  -o, --output string   output config location (format kind:location, default env:AES_CONFIG_FILE) (default "env:AES_CONFIG_FILE")
+  -r, --rotate          rotate keys
+
+Global Flags:
+  -i, --input string   input config location (format kind:location, default env:CONFIG_FILE) (default "env:CONFIG_FILE")
+```
+
+### AES
+
+```sh
+❯ ./servicectl aes --help
+AES crypto.
+
+Usage:
+  servicectl aes [flags]
+
+Flags:
+  -h, --help            help for aes
+  -o, --output string   output config location (format kind:location, default env:AES_CONFIG_FILE) (default "env:AES_CONFIG_FILE")
+  -r, --rotate          rotate keys
+
+Global Flags:
+  -i, --input string   input config location (format kind:location, default env:CONFIG_FILE) (default "env:CONFIG_FILE")
+```
+
+### AES
+
+```sh
+❯ ./servicectl aes --help
+AES crypto.
+
+Usage:
+  servicectl aes [flags]
+
+Flags:
+  -h, --help            help for aes
+  -o, --output string   output config location (format kind:location, default env:AES_CONFIG_FILE) (default "env:AES_CONFIG_FILE")
+  -r, --rotate          rotate keys
+
+Global Flags:
+  -i, --input string   input config location (format kind:location, default env:CONFIG_FILE) (default "env:CONFIG_FILE")
+```
+
 ## Development
 
 If you would like to contribute, here is how you can get started.
