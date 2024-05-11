@@ -4,6 +4,10 @@ Feature: Crypto
 
   Scenario: Succesfuly rotate AES key
     When we rotate the aes key
-    Then it should run sucessfully
-    And we should have a config file "reports/aes_client.yml"
+    Then we should have a succesful rotation of aes keys
     And I should see a log entry of "rotated aes key" in the file "reports/aes.log"
+
+  Scenario: Succesfuly rotate HMAC key
+    When we rotate the hmac key
+    Then we should have a succesful rotation of hmac keys
+    And I should see a log entry of "rotated hmac key" in the file "reports/hmac.log"

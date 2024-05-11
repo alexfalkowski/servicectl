@@ -7,6 +7,7 @@ import (
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/servicectl/cmd"
 	"github.com/alexfalkowski/servicectl/cmd/aes"
+	"github.com/alexfalkowski/servicectl/cmd/hmac"
 )
 
 func main() {
@@ -16,12 +17,15 @@ func main() {
 }
 
 func command() *sc.Command {
-	command := sc.New(cmd.Version)
+	c := sc.New(cmd.Version)
+	c.RegisterInput("")
+	c.RegisterOutput("")
 
-	ro := command.AddClientCommand("aes", "AES crypto.", cmd.Module)
-	flags.StringVar(ro, sc.OutputFlag,
-		"output", "o", "env:AES_CONFIG_FILE", "output config location (format kind:location, default env:AES_CONFIG_FILE)")
-	flags.BoolVar(ro, aes.RotateFlag, "rotate", "r", false, "rotate keys")
+	ac := c.AddClientCommand("aes", "AES crypto.", cmd.Module, aes.Module)
+	flags.BoolVar(ac, aes.RotateFlag, "rotate", "r", false, "rotate keys")
 
-	return command
+	ah := c.AddClientCommand("hmac", "HMAC crypto.", cmd.Module, hmac.Module)
+	flags.BoolVar(ah, hmac.RotateFlag, "rotate", "r", false, "rotate keys")
+
+	return c
 }

@@ -1,30 +1,16 @@
 [![CircleCI](https://circleci.com/gh/alexfalkowski/servicectl.svg?style=svg)](https://circleci.com/gh/alexfalkowski/servicectl)
 
-# Client
+# System Control
 
-Make sure you add the name of the client what what it is.
+A tool for go-service and go-service-templates.
 
-## Background
+## Crypto
 
-Add a background.
-
-### Why a client?
-
-Why is it important to have this client.
-
-## Client
-
-Explain the client side of things.
-
-## Design
-
-Add anything interesting about the design.
-
-## Other Systems
-
-Describe any other similar systems you took inspiration from.
+The ability to handle the cryptography configuration.
 
 ### AES
+
+Handle AES configuration.
 
 ```sh
 ❯ ./servicectl aes --help
@@ -34,66 +20,32 @@ Usage:
   servicectl aes [flags]
 
 Flags:
-  -h, --help            help for aes
-  -o, --output string   output config location (format kind:location, default env:AES_CONFIG_FILE) (default "env:AES_CONFIG_FILE")
-  -r, --rotate          rotate keys
+  -h, --help     help for aes
+  -r, --rotate   rotate keys
 
 Global Flags:
-  -i, --input string   input config location (format kind:location, default env:CONFIG_FILE) (default "env:CONFIG_FILE")
+  -i, --input string    input config location (format kind:location)
+  -o, --output string   output config location (format kind:location)
 ```
 
-### AES
+### HMAC
+
+Handle HMAC configuration.
 
 ```sh
-❯ ./servicectl aes --help
-AES crypto.
+ ./servicectl hmac --help
+HMAC crypto.
 
 Usage:
-  servicectl aes [flags]
+  servicectl hmac [flags]
 
 Flags:
-  -h, --help            help for aes
-  -o, --output string   output config location (format kind:location, default env:AES_CONFIG_FILE) (default "env:AES_CONFIG_FILE")
-  -r, --rotate          rotate keys
+  -h, --help     help for hmac
+  -r, --rotate   rotate keys
 
 Global Flags:
-  -i, --input string   input config location (format kind:location, default env:CONFIG_FILE) (default "env:CONFIG_FILE")
-```
-
-### AES
-
-```sh
-❯ ./servicectl aes --help
-AES crypto.
-
-Usage:
-  servicectl aes [flags]
-
-Flags:
-  -h, --help            help for aes
-  -o, --output string   output config location (format kind:location, default env:AES_CONFIG_FILE) (default "env:AES_CONFIG_FILE")
-  -r, --rotate          rotate keys
-
-Global Flags:
-  -i, --input string   input config location (format kind:location, default env:CONFIG_FILE) (default "env:CONFIG_FILE")
-```
-
-### AES
-
-```sh
-❯ ./servicectl aes --help
-AES crypto.
-
-Usage:
-  servicectl aes [flags]
-
-Flags:
-  -h, --help            help for aes
-  -o, --output string   output config location (format kind:location, default env:AES_CONFIG_FILE) (default "env:AES_CONFIG_FILE")
-  -r, --rotate          rotate keys
-
-Global Flags:
-  -i, --input string   input config location (format kind:location, default env:CONFIG_FILE) (default "env:CONFIG_FILE")
+  -i, --input string    input config location (format kind:location)
+  -o, --output string   output config location (format kind:location)
 ```
 
 ## Development
@@ -117,7 +69,6 @@ This project favours the [Uber Go Style Guide](https://github.com/uber-go/guide/
 ### Setup
 
 Check out [CI](.circleci/config.yml).
-
 
 ### Changes
 
