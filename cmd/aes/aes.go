@@ -28,7 +28,7 @@ type RunCommandParams struct {
 
 // RunCommand for AES.
 func RunCommand(params RunCommandParams) {
-	if !*RotateFlag {
+	if !flags.IsSet(RotateFlag) {
 		return
 	}
 
