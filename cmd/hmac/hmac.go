@@ -1,8 +1,8 @@
-package aes
+package hmac
 
 import (
 	"github.com/alexfalkowski/go-service/cmd"
-	"github.com/alexfalkowski/go-service/crypto/aes"
+	"github.com/alexfalkowski/go-service/crypto/hmac"
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/marshaller"
 	"github.com/alexfalkowski/go-service/runtime"
@@ -15,7 +15,7 @@ import (
 // RotateFlag defines wether we should rotate keys or not.
 var RotateFlag = flags.Bool()
 
-// RunCommandParams for AES.
+// RunCommandParams for HMAC.
 type RunCommandParams struct {
 	fx.In
 
@@ -26,19 +26,19 @@ type RunCommandParams struct {
 	Logger       *zap.Logger
 }
 
-// RunCommand for AES.
+// RunCommand for HMAC.
 func RunCommand(params RunCommandParams) {
 	if !flags.IsSet(RotateFlag) {
 		return
 	}
 
 	fn := func(c *config.Config, l *zap.Logger) {
-		k, err := aes.Generate()
+		k, err := hmac.Generate()
 		runtime.Must(err)
 
-		c.Crypto.AES.Key = k
+		c.Crypto.HMAC.Key = k
 
-		l.Info("rotated aes key", zap.String("key", k))
+		l.Info("rotated hmac key", zap.String("key", k))
 	}
 
 	runner.Run(&runner.Params{

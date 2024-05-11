@@ -1,4 +1,4 @@
-package aes
+package hmac
 
 import (
 	"go.uber.org/fx"

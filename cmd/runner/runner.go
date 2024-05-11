@@ -19,7 +19,7 @@ type ModifyFn func(*config.Config, *zap.Logger)
 type Params struct {
 	Lifecycle    fx.Lifecycle
 	OutputConfig *cmd.OutputConfig
-	Factory      *marshaller.Factory
+	Map          *marshaller.Map
 	Config       *config.Config
 	Logger       *zap.Logger
 	Fn           ModifyFn
@@ -45,8 +45,7 @@ func Run(params *Params) {
 func writeOutConfig(params *Params) {
 	params.Fn(params.Config, params.Logger)
 
-	m, err := params.Factory.Create(params.OutputConfig.Kind())
-	runtime.Must(err)
+	m := params.Map.Get(params.OutputConfig.Kind())
 
 	d, err := m.Marshal(params.Config)
 	runtime.Must(err)

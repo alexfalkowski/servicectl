@@ -4,4 +4,4 @@ vendor
 *.cov
 *.out
 /servicectl
-test/reports/aes_client.yml
+test/reports/*_client.yml
