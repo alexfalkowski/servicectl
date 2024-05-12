@@ -1,10 +1,13 @@
 package aes
 
 import (
+	"context"
+
 	"github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/crypto/aes"
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/marshaller"
+	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/cmd/runner"
 	"github.com/alexfalkowski/servicectl/config"
@@ -32,21 +35,23 @@ func RunCommand(params RunCommandParams) {
 		return
 	}
 
-	fn := func(c *config.Config, l *zap.Logger) {
+	fn := func(ctx context.Context, c *config.Config) context.Context {
 		k, err := aes.Generate()
 		runtime.Must(err)
 
 		c.Crypto.AES.Key = k
 
-		l.Info("rotated aes key", zap.String("key", k))
+		return meta.WithAttribute(ctx, "key", meta.String(k))
 	}
 
-	runner.Run(&runner.Params{
+	p := &runner.Params{
 		Lifecycle:    params.Lifecycle,
 		OutputConfig: params.OutputConfig,
 		Map:          params.Map,
 		Config:       params.Config,
 		Logger:       params.Logger,
 		Fn:           fn,
-	})
+	}
+
+	runner.Run("aes", "rotated key", p)
 }

@@ -1,10 +1,13 @@
 package hmac
 
 import (
+	"context"
+
 	"github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/crypto/hmac"
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/marshaller"
+	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/cmd/runner"
 	"github.com/alexfalkowski/servicectl/config"
@@ -32,21 +35,23 @@ func RunCommand(params RunCommandParams) {
 		return
 	}
 
-	fn := func(c *config.Config, l *zap.Logger) {
+	fn := func(ctx context.Context, c *config.Config) context.Context {
 		k, err := hmac.Generate()
 		runtime.Must(err)
 
 		c.Crypto.HMAC.Key = k
 
-		l.Info("rotated hmac key", zap.String("key", k))
+		return meta.WithAttribute(ctx, "key", meta.String(k))
 	}
 
-	runner.Run(&runner.Params{
+	p := &runner.Params{
 		Lifecycle:    params.Lifecycle,
 		OutputConfig: params.OutputConfig,
 		Map:          params.Map,
 		Config:       params.Config,
 		Logger:       params.Logger,
 		Fn:           fn,
-	})
+	}
+
+	runner.Run("hmac", "rotated key", p)
 }
