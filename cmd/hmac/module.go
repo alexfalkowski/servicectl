@@ -6,5 +6,5 @@ import (
 
 // Module for fx.
 var Module = fx.Options(
-	fx.Invoke(RunCommand),
+	fx.Invoke(Run),
 )

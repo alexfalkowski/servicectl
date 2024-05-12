@@ -15,11 +15,16 @@ import (
 	"go.uber.org/zap"
 )
 
-// RotateFlag defines wether we should rotate keys or not.
-var RotateFlag = flags.Bool()
+var (
+	// RotateFlag defines wether we should rotate the key or not.
+	RotateFlag = flags.Bool()
 
-// RunCommandParams for HMAC.
-type RunCommandParams struct {
+	// VerifyFlag defines wether we should verify the key or not.
+	VerifyFlag = flags.Bool()
+)
+
+// RunParams for HMAC.
+type RunParams struct {
 	fx.In
 
 	Lifecycle    fx.Lifecycle
@@ -29,22 +34,41 @@ type RunCommandParams struct {
 	Logger       *zap.Logger
 }
 
-// RunCommand for HMAC.
-func RunCommand(params RunCommandParams) {
-	if !flags.IsSet(RotateFlag) {
-		return
+// Run for HMAC.
+func Run(params RunParams) {
+	var (
+		fn runner.ModifyFn
+		op string
+	)
+
+	switch {
+	case flags.IsSet(RotateFlag):
+		fn = func(ctx context.Context, c *config.Config) context.Context {
+			k, err := hmac.Generate()
+			runtime.Must(err)
+
+			c.Crypto.HMAC.Key = k
+
+			return meta.WithAttribute(ctx, "key", meta.String(k))
+		}
+		op = "rotated key"
+	case flags.IsSet(VerifyFlag):
+		fn = func(ctx context.Context, c *config.Config) context.Context {
+			a, err := hmac.NewAlgo(c.Crypto.HMAC)
+			runtime.Must(err)
+
+			msg := "this is a test"
+			enc := a.Generate(msg)
+
+			err = a.Compare(enc, msg)
+			runtime.Must(err)
+
+			return meta.WithAttribute(ctx, "testMsg", meta.String(msg))
+		}
+		op = "verified key"
 	}
 
-	fn := func(ctx context.Context, c *config.Config) context.Context {
-		k, err := hmac.Generate()
-		runtime.Must(err)
-
-		c.Crypto.HMAC.Key = k
-
-		return meta.WithAttribute(ctx, "key", meta.String(k))
-	}
-
-	p := &runner.Params{
+	opts := &runner.Options{
 		Lifecycle:    params.Lifecycle,
 		OutputConfig: params.OutputConfig,
 		Map:          params.Map,
@@ -53,5 +77,5 @@ func RunCommand(params RunCommandParams) {
 		Fn:           fn,
 	}
 
-	runner.Run("hmac", "rotated key", p)
+	runner.Run("hmac", op, opts)
 }
