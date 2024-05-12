@@ -52,13 +52,13 @@ func Run(name, operation string, opts *Options) {
 
 func writeOutConfig(ctx context.Context, params *Options) context.Context {
 	ctx = params.Fn(ctx, params.Config)
-
 	m := params.Map.Get(params.OutputConfig.Kind())
 
 	d, err := m.Marshal(params.Config)
 	runtime.Must(err)
 
-	runtime.Must(params.OutputConfig.Write(d, fs.FileMode(0o600)))
+	err = params.OutputConfig.Write(d, fs.FileMode(0o600))
+	runtime.Must(err)
 
 	return ctx
 }

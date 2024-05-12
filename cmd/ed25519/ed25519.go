@@ -1,10 +1,10 @@
-package aes
+package ed25519
 
 import (
 	"context"
 
 	"github.com/alexfalkowski/go-service/cmd"
-	"github.com/alexfalkowski/go-service/crypto/aes"
+	"github.com/alexfalkowski/go-service/crypto/ed25519"
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/marshaller"
 	"github.com/alexfalkowski/go-service/meta"
@@ -16,10 +16,10 @@ import (
 )
 
 var (
-	// RotateFlag defines wether we should rotate the key or not.
+	// RotateFlag defines wether we should rotate the keys or not.
 	RotateFlag = flags.Bool()
 
-	// VerifyFlag defines wether we should verify the key or not.
+	// VerifyFlag defines wether we should verify the keys or not.
 	VerifyFlag = flags.Bool()
 )
 
@@ -44,29 +44,32 @@ func Run(params RunParams) {
 	switch {
 	case flags.IsSet(RotateFlag):
 		fn = func(ctx context.Context, c *config.Config) context.Context {
-			k, err := aes.Generate()
+			pub, pri, err := ed25519.Generate()
 			runtime.Must(err)
 
-			c.Crypto.AES.Key = k
+			c.Crypto.Ed25519.Public = pub
+			c.Crypto.Ed25519.Private = pri
 
-			return meta.WithAttribute(ctx, "key", meta.String(k))
+			ctx = meta.WithAttribute(ctx, "public", meta.String(pub))
+			ctx = meta.WithAttribute(ctx, "private", meta.String(pri))
+
+			return ctx
 		}
-		op = "rotated key"
+		op = "rotated keys"
 	case flags.IsSet(VerifyFlag):
 		fn = func(ctx context.Context, c *config.Config) context.Context {
-			a, err := aes.NewAlgo(c.Crypto.AES)
+			a, err := ed25519.NewAlgo(c.Crypto.Ed25519)
 			runtime.Must(err)
 
 			msg := "this is a test"
-			enc, err := a.Encrypt(msg)
-			runtime.Must(err)
+			enc := a.Generate(msg)
 
-			_, err = a.Decrypt(enc)
+			err = a.Compare(enc, msg)
 			runtime.Must(err)
 
 			return meta.WithAttribute(ctx, "testMsg", meta.String(msg))
 		}
-		op = "verified key"
+		op = "verified keys"
 	}
 
 	opts := &runner.Options{
@@ -78,5 +81,5 @@ func Run(params RunParams) {
 		Fn:           fn,
 	}
 
-	runner.Run("aes", op, opts)
+	runner.Run("ed25519", op, opts)
 }
