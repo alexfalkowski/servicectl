@@ -21,8 +21,8 @@ Usage:
 
 Flags:
   -h, --help     help for aes
-  -r, --rotate   rotate keys
-  -v, --verify   verify keys
+  -r, --rotate   rotate key
+  -v, --verify   verify key
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
@@ -42,12 +42,54 @@ Usage:
 
 Flags:
   -h, --help     help for hmac
+  -r, --rotate   rotate key
+  -v, --verify   verify key
+
+Global Flags:
+  -i, --input string    input config location (format kind:location)
+  -o, --output string   output config location (format kind:location)
+```
+
+### RSA
+
+Handle RSA configuration.
+
+```sh
+❯ ./servicectl rsa --help
+RSA crypto.
+
+Usage:
+  servicectl rsa [flags]
+
+Flags:
+  -h, --help     help for rsa
   -r, --rotate   rotate keys
   -v, --verify   verify keys
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
   -o, --output string   output config location (format kind:location)
+```
+
+### Ed25519
+
+Handle Ed25519 configuration.
+
+```sh
+❯ ./servicectl ed25519 --help
+Ed25519 crypto.
+
+Usage:
+  servicectl ed25519 [flags]
+
+Flags:
+  -h, --help     help for ed25519
+  -r, --rotate   rotate keys
+  -v, --verify   verify keys
+
+Global Flags:
+  -i, --input string    input config location (format kind:location)
+  -o, --output string   output config location (format kind:location
 ```
 
 ## Development
