@@ -22,6 +22,7 @@ Usage:
 Flags:
   -h, --help     help for aes
   -r, --rotate   rotate keys
+  -v, --verify   verify keys
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
@@ -33,7 +34,7 @@ Global Flags:
 Handle HMAC configuration.
 
 ```sh
- ./servicectl hmac --help
+❯ ./servicectl hmac --help
 HMAC crypto.
 
 Usage:
@@ -42,6 +43,7 @@ Usage:
 Flags:
   -h, --help     help for hmac
   -r, --rotate   rotate keys
+  -v, --verify   verify keys
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
