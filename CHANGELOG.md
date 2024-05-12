@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [v0.9.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.9.0) - 2024-05-12
+
+- [`78d2c93`](https://github.com/alexfalkowski/servicectl/commit/78d2c9317745d6aaa60469d74f83981855225bb4) feat(crypto): rotate/verify of rsa/ed25519 keys (#15)
+- [`2fbde83`](https://github.com/alexfalkowski/servicectl/commit/2fbde83c62828ae1a4fc4ffbfe6b1ae2f314655a) docs(cmd): add new params (#14)
+
 ## [v0.8.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.8.0) - 2024-05-12
 
 - [`416014e`](https://github.com/alexfalkowski/servicectl/commit/416014ef658e8e0f882be7da7776579947e95f32) feat(cmd): verify aes/hmac key (#13)
