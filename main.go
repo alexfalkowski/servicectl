@@ -23,9 +23,11 @@ func command() *sc.Command {
 
 	ac := c.AddClientCommand("aes", "AES crypto.", cmd.Module, aes.Module)
 	flags.BoolVar(ac, aes.RotateFlag, "rotate", "r", false, "rotate keys")
+	flags.BoolVar(ac, aes.VerifyFlag, "verify", "v", false, "verify keys")
 
 	ah := c.AddClientCommand("hmac", "HMAC crypto.", cmd.Module, hmac.Module)
 	flags.BoolVar(ah, hmac.RotateFlag, "rotate", "r", false, "rotate keys")
+	flags.BoolVar(ah, hmac.VerifyFlag, "verify", "v", false, "verify keys")
 
 	return c
 }

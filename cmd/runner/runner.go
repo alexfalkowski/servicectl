@@ -17,8 +17,8 @@ import (
 // ModifyFn for cmd.
 type ModifyFn func(context.Context, *config.Config) context.Context
 
-// Params for runner.
-type Params struct {
+// Options for runner.
+type Options struct {
 	Lifecycle    fx.Lifecycle
 	OutputConfig *cmd.OutputConfig
 	Map          *marshaller.Map
@@ -28,8 +28,12 @@ type Params struct {
 }
 
 // Run the cmd.
-func Run(name, operation string, params *Params) {
-	params.Lifecycle.Append(fx.Hook{
+func Run(name, operation string, opts *Options) {
+	if opts.Fn == nil {
+		return
+	}
+
+	opts.Lifecycle.Append(fx.Hook{
 		OnStart: func(ctx context.Context) (err error) {
 			defer func() {
 				if r := recover(); r != nil {
@@ -37,16 +41,16 @@ func Run(name, operation string, params *Params) {
 				}
 			}()
 
-			ctx = writeOutConfig(ctx, params)
+			ctx = writeOutConfig(ctx, opts)
 			msg := fmt.Sprintf("%s: successfully %s", name, operation)
-			params.Logger.Info(msg, tz.Meta(ctx)...)
+			opts.Logger.Info(msg, tz.Meta(ctx)...)
 
 			return
 		},
 	})
 }
 
-func writeOutConfig(ctx context.Context, params *Params) context.Context {
+func writeOutConfig(ctx context.Context, params *Options) context.Context {
 	ctx = params.Fn(ctx, params.Config)
 
 	m := params.Map.Get(params.OutputConfig.Kind())

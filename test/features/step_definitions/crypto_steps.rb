@@ -8,9 +8,25 @@ When('we rotate the aes key') do
   _, @status = Process.waitpid2(pid)
 end
 
+When('we verify the aes key') do
+  cmd = Nonnative.go_executable(%w[cover], 'reports', '../servicectl', 'aes', '-i', 'file:.config/client.yml', '-o', 'file:reports/hmac_client.yml',
+                                '--verify')
+  pid = spawn({}, cmd, %i[out err] => ['reports/aes.log', 'a'])
+
+  _, @status = Process.waitpid2(pid)
+end
+
 When('we rotate the hmac key') do
   cmd = Nonnative.go_executable(%w[cover], 'reports', '../servicectl', 'hmac', '-i', 'file:.config/client.yml', '-o', 'file:reports/hmac_client.yml',
                                 '--rotate')
+  pid = spawn({}, cmd, %i[out err] => ['reports/hmac.log', 'a'])
+
+  _, @status = Process.waitpid2(pid)
+end
+
+When('we verify the hmac key') do
+  cmd = Nonnative.go_executable(%w[cover], 'reports', '../servicectl', 'hmac', '-i', 'file:.config/client.yml', '-o', 'file:reports/hmac_client.yml',
+                                '--verify')
   pid = spawn({}, cmd, %i[out err] => ['reports/hmac.log', 'a'])
 
   _, @status = Process.waitpid2(pid)
