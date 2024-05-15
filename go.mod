@@ -3,7 +3,7 @@ module github.com/alexfalkowski/servicectl
 go 1.22.3
 
 require (
-	github.com/alexfalkowski/go-service v1.189.2
+	github.com/alexfalkowski/go-service v1.189.3
 	go.uber.org/fx v1.21.1
 	go.uber.org/zap v1.27.0
 )
@@ -123,7 +123,7 @@ require (
 	google.golang.org/genproto v0.0.0-20240227224415-6ceb2ff114de // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240509183442-62759503f434 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240429193739-8cf5692501f6 // indirect
-	google.golang.org/grpc v1.63.2 // indirect
+	google.golang.org/grpc v1.64.0 // indirect
 	google.golang.org/protobuf v1.34.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
