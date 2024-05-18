@@ -5,6 +5,11 @@ jobs:
     docker:
       - image: alexfalkowski/go:1.22-ruby
       - image: redis:7.2-alpine
+      - image: postgres:16-bullseye
+        environment:
+          POSTGRES_DB: test
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
     working_directory: ~/servicectl
     steps:
       - checkout

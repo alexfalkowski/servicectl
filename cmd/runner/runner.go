@@ -51,11 +51,12 @@ func Run(name, operation string, opts *Options) {
 }
 
 func writeOutConfig(ctx context.Context, params *Options) context.Context {
+	ctx = params.Fn(ctx, params.Config)
+
 	if params.OutputConfig == nil {
 		return ctx
 	}
 
-	ctx = params.Fn(ctx, params.Config)
 	m := params.Map.Get(params.OutputConfig.Kind())
 
 	d, err := m.Marshal(params.Config)

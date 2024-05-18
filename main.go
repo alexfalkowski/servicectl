@@ -11,6 +11,7 @@ import (
 	"github.com/alexfalkowski/servicectl/cmd/crypto/ed25519"
 	"github.com/alexfalkowski/servicectl/cmd/crypto/hmac"
 	"github.com/alexfalkowski/servicectl/cmd/crypto/rsa"
+	"github.com/alexfalkowski/servicectl/cmd/database/sql"
 )
 
 func main() {
@@ -25,6 +26,7 @@ func command() *sc.Command {
 	c.RegisterOutput("")
 
 	cache(c)
+	database(c)
 	crypto(c)
 
 	return c
@@ -33,6 +35,11 @@ func command() *sc.Command {
 func cache(c *sc.Command) {
 	r := c.AddClientCommand("redis", "Redis cache.", cmd.Module, redis.Module)
 	flags.BoolVar(r, redis.VerifyFlag, "verify", "v", false, "verify key")
+}
+
+func database(c *sc.Command) {
+	p := c.AddClientCommand("pg", "Postgres DB.", cmd.Module, sql.Module)
+	flags.BoolVar(p, sql.VerifyFlag, "verify", "v", false, "verify key")
 }
 
 func crypto(c *sc.Command) {
