@@ -6,10 +6,10 @@ import (
 	sc "github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/servicectl/cmd"
-	"github.com/alexfalkowski/servicectl/cmd/aes"
-	"github.com/alexfalkowski/servicectl/cmd/ed25519"
-	"github.com/alexfalkowski/servicectl/cmd/hmac"
-	"github.com/alexfalkowski/servicectl/cmd/rsa"
+	"github.com/alexfalkowski/servicectl/cmd/crypto/aes"
+	"github.com/alexfalkowski/servicectl/cmd/crypto/ed25519"
+	"github.com/alexfalkowski/servicectl/cmd/crypto/hmac"
+	"github.com/alexfalkowski/servicectl/cmd/crypto/rsa"
 )
 
 func main() {
@@ -23,6 +23,12 @@ func command() *sc.Command {
 	c.RegisterInput("")
 	c.RegisterOutput("")
 
+	crypto(c)
+
+	return c
+}
+
+func crypto(c *sc.Command) {
 	ac := c.AddClientCommand("aes", "AES crypto.", cmd.Module, aes.Module)
 	flags.BoolVar(ac, aes.RotateFlag, "rotate", "r", false, "rotate key")
 	flags.BoolVar(ac, aes.VerifyFlag, "verify", "v", false, "verify key")
@@ -38,6 +44,4 @@ func command() *sc.Command {
 	ae := c.AddClientCommand("ed25519", "Ed25519 crypto.", cmd.Module, ed25519.Module)
 	flags.BoolVar(ae, ed25519.RotateFlag, "rotate", "r", false, "rotate keys")
 	flags.BoolVar(ae, ed25519.VerifyFlag, "verify", "v", false, "verify keys")
-
-	return c
 }
