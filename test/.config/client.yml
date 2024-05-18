@@ -1,4 +1,10 @@
 environment: development
+cache:
+  redis:
+    marshaller: proto
+    compressor: snappy
+    addresses:
+      server: localhost:6379
 crypto:
   aes:
     key: 4PtR05/1XKgcCO8xjw8mMMnUpmJmFVAszKXTUKSDqDI=
