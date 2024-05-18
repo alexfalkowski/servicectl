@@ -4,6 +4,7 @@ jobs:
   build-client:
     docker:
       - image: alexfalkowski/go:1.22-ruby
+      - image: redis:7.2-alpine
     working_directory: ~/servicectl
     steps:
       - checkout
