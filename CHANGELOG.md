@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [v0.16.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.16.0) - 2024-05-18
+
+- [`2c65480`](https://github.com/alexfalkowski/servicectl/commit/2c654806a07f65dfc09ed200ee40e3c950eb7986) feat(database): verify pg connection (#27)
+
 ## [v0.15.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.15.0) - 2024-05-18
 
 - [`b497d61`](https://github.com/alexfalkowski/servicectl/commit/b497d616c018959cb39b49ba16488351c767bcc6) feat(cache): verify redis connection (#26)
