@@ -4,6 +4,30 @@
 
 A tool for go-service and go-service-templates.
 
+## Cache
+
+The ability to handle the cache configuration.
+
+### Redis
+
+Handle redis configuration.
+
+```sh
+❯ ./servicectl redis --help
+Redis cache.
+
+Usage:
+  servicectl redis [flags]
+
+Flags:
+  -h, --help     help for redis
+  -v, --verify   verify key
+
+Global Flags:
+  -i, --input string    input config location (format kind:location)
+  -o, --output string   output config location (format kind:location)
+```
+
 ## Crypto
 
 The ability to handle the cryptography configuration.
@@ -90,6 +114,30 @@ Flags:
 Global Flags:
   -i, --input string    input config location (format kind:location)
   -o, --output string   output config location (format kind:location
+```
+
+## Database
+
+The ability to handle the database configuration.
+
+### PG
+
+Handle pg configuration.
+
+```sh
+❯ ./servicectl pg --help
+Postgres DB.
+
+Usage:
+  servicectl pg [flags]
+
+Flags:
+  -h, --help     help for pg
+  -v, --verify   verify key
+
+Global Flags:
+  -i, --input string    input config location (format kind:location)
+  -o, --output string   output config location (format kind:location)
 ```
 
 ## Development

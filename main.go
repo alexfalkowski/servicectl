@@ -37,11 +37,6 @@ func cache(c *sc.Command) {
 	flags.BoolVar(r, redis.VerifyFlag, "verify", "v", false, "verify key")
 }
 
-func database(c *sc.Command) {
-	p := c.AddClientCommand("pg", "Postgres DB.", cmd.Module, sql.Module)
-	flags.BoolVar(p, sql.VerifyFlag, "verify", "v", false, "verify key")
-}
-
 func crypto(c *sc.Command) {
 	ac := c.AddClientCommand("aes", "AES crypto.", cmd.Module, aes.Module)
 	flags.BoolVar(ac, aes.RotateFlag, "rotate", "r", false, "rotate key")
@@ -58,4 +53,9 @@ func crypto(c *sc.Command) {
 	ae := c.AddClientCommand("ed25519", "Ed25519 crypto.", cmd.Module, ed25519.Module)
 	flags.BoolVar(ae, ed25519.RotateFlag, "rotate", "r", false, "rotate keys")
 	flags.BoolVar(ae, ed25519.VerifyFlag, "verify", "v", false, "verify keys")
+}
+
+func database(c *sc.Command) {
+	p := c.AddClientCommand("pg", "Postgres DB.", cmd.Module, sql.Module)
+	flags.BoolVar(p, sql.VerifyFlag, "verify", "v", false, "verify key")
 }
