@@ -4,6 +4,7 @@ go 1.22.3
 
 require (
 	github.com/alexfalkowski/go-service v1.191.1
+	github.com/linxGnu/mssqlx v1.1.8
 	go.uber.org/fx v1.21.1
 	go.uber.org/zap v1.27.0
 )
@@ -61,7 +62,6 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.17.8 // indirect
 	github.com/lib/pq v1.10.9 // indirect
-	github.com/linxGnu/mssqlx v1.1.8 // indirect
 	github.com/lufia/plan9stats v0.0.0-20231016141302-07b5767bb0ed // indirect
 	github.com/matthewhartstonge/argon2 v1.0.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
