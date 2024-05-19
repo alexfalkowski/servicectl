@@ -12,6 +12,7 @@ import (
 	"github.com/alexfalkowski/servicectl/cmd/crypto/hmac"
 	"github.com/alexfalkowski/servicectl/cmd/crypto/rsa"
 	"github.com/alexfalkowski/servicectl/cmd/database/sql"
+	cf "github.com/alexfalkowski/servicectl/cmd/feature"
 )
 
 func main() {
@@ -26,15 +27,16 @@ func command() *sc.Command {
 	c.RegisterOutput("")
 
 	cache(c)
-	database(c)
 	crypto(c)
+	database(c)
+	feature(c)
 
 	return c
 }
 
 func cache(c *sc.Command) {
 	r := c.AddClientCommand("redis", "Redis cache.", cmd.Module, redis.Module)
-	flags.BoolVar(r, redis.VerifyFlag, "verify", "v", false, "verify key")
+	flags.BoolVar(r, redis.VerifyFlag, "verify", "v", false, "verify connection")
 }
 
 func crypto(c *sc.Command) {
@@ -57,5 +59,10 @@ func crypto(c *sc.Command) {
 
 func database(c *sc.Command) {
 	p := c.AddClientCommand("pg", "Postgres DB.", cmd.Module, sql.Module)
-	flags.BoolVar(p, sql.VerifyFlag, "verify", "v", false, "verify key")
+	flags.BoolVar(p, sql.VerifyFlag, "verify", "v", false, "verify connection")
+}
+
+func feature(c *sc.Command) {
+	f := c.AddClientCommand("feature", "Feature flags.", cmd.Module, cf.Module)
+	flags.BoolVar(f, cf.VerifyFlag, "verify", "v", false, "verify connection")
 }
