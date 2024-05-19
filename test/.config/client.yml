@@ -22,6 +22,8 @@ feature:
   retry:
       timeout: 1s
       attempts: 3
+hooks:
+  secret: YWJjZGUxMjM0NQ==
 sql:
   pg:
     masters:

@@ -144,8 +144,6 @@ Global Flags:
 
 The ability to handle the feature configuration.
 
-Handle pg configuration.
-
 ```sh
 ❯ ./servicectl feature --help
 Feature flags.
@@ -156,6 +154,26 @@ Usage:
 Flags:
   -h, --help     help for feature
   -v, --verify   verify connection
+
+Global Flags:
+  -i, --input string    input config location (format kind:location)
+  -o, --output string   output config location (format kind:location)
+```
+
+## Hook
+
+The ability to handle the hook configuration.
+
+```sh
+❯ ./servicectl hook --help
+Webhook.
+
+Usage:
+  servicectl hook [flags]
+
+Flags:
+  -h, --help   help for hook
+  -s, --sign   sign webhook
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
