@@ -74,7 +74,8 @@ func feature(c *sc.Command) {
 
 func hooks(c *sc.Command) {
 	h := c.AddClientCommand("hooks", "Webhooks.", cmd.Module, ch.Module)
-	flags.BoolVar(h, ch.SignFlag, "sign", "s", false, "sign webhook")
+	flags.BoolVar(h, ch.RotateFlag, "rotate", "r", false, "rotate secret")
+	flags.BoolVar(h, ch.VerifyFlag, "verify", "v", false, "verify webhook")
 }
 
 func net(c *sc.Command) {

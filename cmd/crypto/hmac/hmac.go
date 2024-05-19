@@ -39,6 +39,7 @@ func Run(params RunParams) {
 	var (
 		fn runner.ModifyFn
 		op string
+		oc *cmd.OutputConfig
 	)
 
 	switch {
@@ -52,6 +53,7 @@ func Run(params RunParams) {
 			return meta.WithAttribute(ctx, "key", meta.String(k))
 		}
 		op = "rotated key"
+		oc = params.OutputConfig
 	case flags.IsSet(VerifyFlag):
 		fn = func(ctx context.Context, c *config.Config) context.Context {
 			a, err := hmac.NewAlgo(c.Crypto.HMAC)
@@ -70,7 +72,7 @@ func Run(params RunParams) {
 
 	opts := &runner.Options{
 		Lifecycle:    params.Lifecycle,
-		OutputConfig: params.OutputConfig,
+		OutputConfig: oc,
 		Map:          params.Map,
 		Config:       params.Config,
 		Logger:       params.Logger,
