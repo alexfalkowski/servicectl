@@ -9,8 +9,7 @@ When('we rotate the aes key') do
 end
 
 When('we verify the aes key') do
-  cmd = Nonnative.go_executable(%w[cover], 'reports', '../servicectl', 'aes', '-i', 'file:.config/client.yml', '-o', 'file:reports/hmac_client.yml',
-                                '--verify')
+  cmd = Nonnative.go_executable(%w[cover], 'reports', '../servicectl', 'aes', '-i', 'file:.config/client.yml', '--verify')
   pid = spawn({}, cmd, %i[out err] => ['reports/aes.log', 'a'])
 
   _, @status = Process.waitpid2(pid)
@@ -25,8 +24,7 @@ When('we rotate the hmac key') do
 end
 
 When('we verify the hmac key') do
-  cmd = Nonnative.go_executable(%w[cover], 'reports', '../servicectl', 'hmac', '-i', 'file:.config/client.yml', '-o', 'file:reports/hmac_client.yml',
-                                '--verify')
+  cmd = Nonnative.go_executable(%w[cover], 'reports', '../servicectl', 'hmac', '-i', 'file:.config/client.yml', '--verify')
   pid = spawn({}, cmd, %i[out err] => ['reports/hmac.log', 'a'])
 
   _, @status = Process.waitpid2(pid)
@@ -40,7 +38,7 @@ When('we rotate the rsa key') do
 end
 
 When('we verify the rsa key') do
-  cmd = Nonnative.go_executable(%w[cover], 'reports', '../servicectl', 'rsa', '-i', 'file:.config/client.yml', '-o', 'file:reports/rsa_client.yml', '--verify')
+  cmd = Nonnative.go_executable(%w[cover], 'reports', '../servicectl', 'rsa', '-i', 'file:.config/client.yml', '--verify')
   pid = spawn({}, cmd, %i[out err] => ['reports/rsa.log', 'a'])
 
   _, @status = Process.waitpid2(pid)
@@ -54,7 +52,7 @@ When('we rotate the ed25519 key') do
 end
 
 When('we verify the ed25519 key') do
-  cmd = Nonnative.go_executable(%w[cover], 'reports', '../servicectl', 'ed25519', '-i', 'file:.config/client.yml', '-o', 'file:reports/ed25519_client.yml', '--verify')
+  cmd = Nonnative.go_executable(%w[cover], 'reports', '../servicectl', 'ed25519', '-i', 'file:.config/client.yml', '--verify')
   pid = spawn({}, cmd, %i[out err] => ['reports/ed25519.log', 'a'])
 
   _, @status = Process.waitpid2(pid)

@@ -39,6 +39,7 @@ func Run(params RunParams) {
 	var (
 		fn runner.ModifyFn
 		op string
+		oc *cmd.OutputConfig
 	)
 
 	switch {
@@ -56,6 +57,7 @@ func Run(params RunParams) {
 			return ctx
 		}
 		op = "rotated keys"
+		oc = params.OutputConfig
 	case flags.IsSet(VerifyFlag):
 		fn = func(ctx context.Context, c *config.Config) context.Context {
 			a, err := rsa.NewAlgo(c.Crypto.RSA)
@@ -75,7 +77,7 @@ func Run(params RunParams) {
 
 	opts := &runner.Options{
 		Lifecycle:    params.Lifecycle,
-		OutputConfig: params.OutputConfig,
+		OutputConfig: oc,
 		Map:          params.Map,
 		Config:       params.Config,
 		Logger:       params.Logger,
