@@ -13,6 +13,7 @@ import (
 	"github.com/alexfalkowski/servicectl/cmd/crypto/rsa"
 	"github.com/alexfalkowski/servicectl/cmd/database/sql"
 	cf "github.com/alexfalkowski/servicectl/cmd/feature"
+	ch "github.com/alexfalkowski/servicectl/cmd/hooks"
 )
 
 func main() {
@@ -30,6 +31,7 @@ func command() *sc.Command {
 	crypto(c)
 	database(c)
 	feature(c)
+	hooks(c)
 
 	return c
 }
@@ -65,4 +67,9 @@ func database(c *sc.Command) {
 func feature(c *sc.Command) {
 	f := c.AddClientCommand("feature", "Feature flags.", cmd.Module, cf.Module)
 	flags.BoolVar(f, cf.VerifyFlag, "verify", "v", false, "verify connection")
+}
+
+func hooks(c *sc.Command) {
+	h := c.AddClientCommand("hooks", "Webhooks.", cmd.Module, ch.Module)
+	flags.BoolVar(h, ch.SignFlag, "sign", "s", false, "sign webhook")
 }
