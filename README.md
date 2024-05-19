@@ -2,7 +2,10 @@
 
 # System Control
 
-A tool for go-service and go-service-templates.
+A tool for systems that use:
+- https://github.com/alexfalkowski/go-service
+- https://github.com/alexfalkowski/go-service-template
+- https://github.com/alexfalkowski/go-client-template
 
 ## Cache
 
@@ -174,6 +177,49 @@ Usage:
 Flags:
   -h, --help   help for hook
   -s, --sign   sign webhook
+
+Global Flags:
+  -i, --input string    input config location (format kind:location)
+  -o, --output string   output config location (format kind:location)
+```
+## NET
+
+The ability to handle the net configuration.
+
+### HTTP
+
+Handle HTTP configuration.
+
+```sh
+❯ ./servicectl http --help
+HTTP Server.
+
+Usage:
+  servicectl http [flags]
+
+Flags:
+  -h, --help     help for http
+  -v, --verify   verify server
+
+Global Flags:
+  -i, --input string    input config location (format kind:location)
+  -o, --output string   output config location (format kind:location)
+```
+
+### gRPC
+
+Handle gRPC configuration.
+
+```sh
+❯ ./servicectl grpc --help
+gRPC Server.
+
+Usage:
+  servicectl grpc [flags]
+
+Flags:
+  -h, --help     help for grpc
+  -v, --verify   verify server
 
 Global Flags:
   -i, --input string    input config location (format kind:location)

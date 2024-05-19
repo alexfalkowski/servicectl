@@ -17,6 +17,9 @@ import (
 // ModifyFn for cmd.
 type ModifyFn func(context.Context, *config.Config) context.Context
 
+// NoModify for cmd.
+var NoModify = func(ctx context.Context, _ *config.Config) context.Context { return ctx }
+
 // Options for runner.
 type Options struct {
 	Lifecycle    fx.Lifecycle
