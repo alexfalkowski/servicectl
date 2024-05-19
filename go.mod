@@ -5,6 +5,7 @@ go 1.22.3
 require (
 	github.com/alexfalkowski/go-service v1.191.3
 	github.com/linxGnu/mssqlx v1.1.8
+	github.com/open-feature/go-sdk v1.11.0
 	go.uber.org/fx v1.21.1
 	go.uber.org/zap v1.27.0
 )
@@ -67,7 +68,6 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/ngrok/sqlmw v0.0.0-20220520173518-97c9c04efc79 // indirect
-	github.com/open-feature/go-sdk v1.11.0 // indirect
 	github.com/open-feature/go-sdk-contrib/providers/flipt v0.1.1 // indirect
 	github.com/opencontainers/runtime-spec v1.0.2 // indirect
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58 // indirect

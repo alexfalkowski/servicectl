@@ -21,7 +21,7 @@ Usage:
 
 Flags:
   -h, --help     help for redis
-  -v, --verify   verify key
+  -v, --verify   verify connection
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
@@ -133,7 +133,29 @@ Usage:
 
 Flags:
   -h, --help     help for pg
-  -v, --verify   verify key
+  -v, --verify   verify connection
+
+Global Flags:
+  -i, --input string    input config location (format kind:location)
+  -o, --output string   output config location (format kind:location)
+```
+
+## Feature
+
+The ability to handle the feature configuration.
+
+Handle pg configuration.
+
+```sh
+❯ ./servicectl feature --help
+Feature flags.
+
+Usage:
+  servicectl feature [flags]
+
+Flags:
+  -h, --help     help for feature
+  -v, --verify   verify connection
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
