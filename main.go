@@ -14,6 +14,8 @@ import (
 	"github.com/alexfalkowski/servicectl/cmd/database/sql"
 	cf "github.com/alexfalkowski/servicectl/cmd/feature"
 	ch "github.com/alexfalkowski/servicectl/cmd/hooks"
+	"github.com/alexfalkowski/servicectl/cmd/net/grpc"
+	"github.com/alexfalkowski/servicectl/cmd/net/http"
 )
 
 func main() {
@@ -32,6 +34,7 @@ func command() *sc.Command {
 	database(c)
 	feature(c)
 	hooks(c)
+	net(c)
 
 	return c
 }
@@ -72,4 +75,12 @@ func feature(c *sc.Command) {
 func hooks(c *sc.Command) {
 	h := c.AddClientCommand("hooks", "Webhooks.", cmd.Module, ch.Module)
 	flags.BoolVar(h, ch.SignFlag, "sign", "s", false, "sign webhook")
+}
+
+func net(c *sc.Command) {
+	h := c.AddClientCommand("http", "HTTP Server.", cmd.Module, http.Module)
+	flags.BoolVar(h, http.VerifyFlag, "verify", "v", false, "verify server")
+
+	g := c.AddClientCommand("grpc", "gRPC Server.", cmd.Module, grpc.Module)
+	flags.BoolVar(g, grpc.VerifyFlag, "verify", "v", false, "verify server")
 }

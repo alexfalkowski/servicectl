@@ -24,6 +24,9 @@ feature:
       attempts: 3
 hooks:
   secret: YWJjZGUxMjM0NQ==
+limiter:
+  kind: user-agent
+  pattern: 10-S
 sql:
   pg:
     masters:
@@ -36,9 +39,16 @@ sql:
 telemetry:
   logger:
     level: info
-  metrics:
-    kind: otlp
-    host: http://localhost:9009/otlp/v1/metrics
-  tracer:
-    kind: otlp
-    host: http://localhost:4318/v1/traces
+transport:
+  http:
+    port: 11000
+    retry:
+      timeout: 1s
+      attempts: 3
+    user_agent: Client http/1.0
+  grpc:
+    port: 12000
+    retry:
+      timeout: 1s
+      attempts: 3
+    user_agent: Client grpc/1.0
