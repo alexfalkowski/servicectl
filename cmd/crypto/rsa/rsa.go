@@ -3,10 +3,8 @@ package rsa
 import (
 	"context"
 
-	"github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/crypto/rsa"
 	"github.com/alexfalkowski/go-service/flags"
-	"github.com/alexfalkowski/go-service/marshaller"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/cmd/runner"
@@ -27,11 +25,8 @@ var (
 type RunParams struct {
 	fx.In
 
-	Lifecycle    fx.Lifecycle
-	OutputConfig *cmd.OutputConfig
-	Map          *marshaller.Map
-	Config       *config.Config
-	Logger       *zap.Logger
+	Lifecycle fx.Lifecycle
+	Logger    *zap.Logger
 }
 
 // Run for AES.
@@ -39,7 +34,6 @@ func Run(params RunParams) {
 	var (
 		fn runner.ModifyFn
 		op string
-		oc *cmd.OutputConfig
 	)
 
 	switch {
@@ -57,7 +51,6 @@ func Run(params RunParams) {
 			return ctx
 		}
 		op = "rotated keys"
-		oc = params.OutputConfig
 	case flags.IsSet(VerifyFlag):
 		fn = func(ctx context.Context, c *config.Config) context.Context {
 			a, err := rsa.NewAlgo(c.Crypto.RSA)
@@ -76,12 +69,9 @@ func Run(params RunParams) {
 	}
 
 	opts := &runner.Options{
-		Lifecycle:    params.Lifecycle,
-		OutputConfig: oc,
-		Map:          params.Map,
-		Config:       params.Config,
-		Logger:       params.Logger,
-		Fn:           fn,
+		Lifecycle: params.Lifecycle,
+		Logger:    params.Logger,
+		Fn:        fn,
 	}
 
 	runner.Run("rsa", op, opts)
