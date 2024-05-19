@@ -27,7 +27,6 @@ func main() {
 func command() *sc.Command {
 	c := sc.New(cmd.Version)
 	c.RegisterInput("")
-	c.RegisterOutput("")
 
 	cache(c)
 	crypto(c)

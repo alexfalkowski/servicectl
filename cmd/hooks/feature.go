@@ -6,10 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/flags"
 	h "github.com/alexfalkowski/go-service/hooks"
-	"github.com/alexfalkowski/go-service/marshaller"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/cmd/runner"
@@ -31,12 +29,9 @@ var (
 type RunParams struct {
 	fx.In
 
-	Lifecycle    fx.Lifecycle
-	OutputConfig *cmd.OutputConfig
-	Map          *marshaller.Map
-	Config       *config.Config
-	Logger       *zap.Logger
-	Webhook      *hooks.Webhook
+	Lifecycle fx.Lifecycle
+	Logger    *zap.Logger
+	Webhook   *hooks.Webhook
 }
 
 // Run for hooks.
@@ -44,7 +39,6 @@ func Run(params RunParams) {
 	var (
 		fn runner.ModifyFn
 		op string
-		oc *cmd.OutputConfig
 	)
 
 	switch {
@@ -58,7 +52,6 @@ func Run(params RunParams) {
 			return meta.WithAttribute(ctx, "key", meta.String(s))
 		}
 		op = "rotated secret"
-		oc = params.OutputConfig
 	case flags.IsSet(VerifyFlag):
 		fn = func(ctx context.Context, _ *config.Config) context.Context {
 			id, ts, p := "test", time.Now(), []byte("test")
@@ -80,12 +73,9 @@ func Run(params RunParams) {
 	}
 
 	opts := &runner.Options{
-		Lifecycle:    params.Lifecycle,
-		OutputConfig: oc,
-		Map:          params.Map,
-		Config:       params.Config,
-		Logger:       params.Logger,
-		Fn:           fn,
+		Lifecycle: params.Lifecycle,
+		Logger:    params.Logger,
+		Fn:        fn,
 	}
 
 	runner.Run("hooks", op, opts)

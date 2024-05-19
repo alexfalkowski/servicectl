@@ -28,7 +28,6 @@ Flags:
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
-  -o, --output string   output config location (format kind:location)
 ```
 
 ## Crypto
@@ -53,7 +52,6 @@ Flags:
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
-  -o, --output string   output config location (format kind:location)
 ```
 
 ### HMAC
@@ -74,7 +72,6 @@ Flags:
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
-  -o, --output string   output config location (format kind:location)
 ```
 
 ### RSA
@@ -95,7 +92,6 @@ Flags:
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
-  -o, --output string   output config location (format kind:location)
 ```
 
 ### Ed25519
@@ -116,7 +112,6 @@ Flags:
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
-  -o, --output string   output config location (format kind:location
 ```
 
 ## Database
@@ -140,7 +135,6 @@ Flags:
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
-  -o, --output string   output config location (format kind:location)
 ```
 
 ## Feature
@@ -160,7 +154,6 @@ Flags:
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
-  -o, --output string   output config location (format kind:location)
 ```
 
 ## Hook
@@ -180,7 +173,6 @@ Flags:
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
-  -o, --output string   output config location (format kind:location)
 ```
 ## NET
 
@@ -203,7 +195,6 @@ Flags:
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
-  -o, --output string   output config location (format kind:location)
 ```
 
 ### gRPC
@@ -223,7 +214,6 @@ Flags:
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
-  -o, --output string   output config location (format kind:location)
 ```
 
 ## Development
