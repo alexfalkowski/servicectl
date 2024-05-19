@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [v0.19.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.19.0) - 2024-05-19
+
+- [`0a7c9d7`](https://github.com/alexfalkowski/servicectl/commit/0a7c9d7b89317b6d7120a8d450b8e078cdfc6cfc) feat(net): verify net (#33)
+
 ## [v0.18.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.18.0) - 2024-05-19
 
 - [`be17003`](https://github.com/alexfalkowski/servicectl/commit/be17003a31f7b5e7e44151e0d5d662718915d842) feat(hooks): verify hook signature (#32)
