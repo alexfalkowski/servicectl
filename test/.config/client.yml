@@ -5,6 +5,7 @@ cache:
     compressor: snappy
     addresses:
       server: localhost:6379
+    url: secrets/redis
 crypto:
   aes:
     key: secrets/aes
@@ -30,9 +31,9 @@ limiter:
 sql:
   pg:
     masters:
-      - url: postgres://test:test@localhost:5432/test?sslmode=disable
+      - url: secrets/pg
     slaves:
-      - url: postgres://test:test@localhost:5432/test?sslmode=disable
+      - url: secrets/pg
     max_open_conns: 5
     max_idle_conns: 5
     conn_max_lifetime: 1h
