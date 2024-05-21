@@ -21,35 +21,25 @@ var (
 	VerifyFlag = flags.Bool()
 )
 
-// RunParams for AES.
-type RunParams struct {
-	fx.In
-
-	Lifecycle fx.Lifecycle
-	Logger    *zap.Logger
-}
-
-// Run for AES.
-func Run(params RunParams) {
+// Start for AES.
+func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 	var (
-		fn runner.ModifyFn
+		fn runner.StartFn
 		op string
 	)
 
 	switch {
 	case flags.IsSet(RotateFlag):
-		fn = func(ctx context.Context, c *config.Config) context.Context {
+		fn = func(ctx context.Context) context.Context {
 			k, err := aes.Generate()
 			runtime.Must(err)
-
-			c.Crypto.AES.Key = k
 
 			return meta.WithAttribute(ctx, "key", meta.String(k))
 		}
 		op = "rotated key"
 	case flags.IsSet(VerifyFlag):
-		fn = func(ctx context.Context, c *config.Config) context.Context {
-			a, err := aes.NewAlgo(c.Crypto.AES)
+		fn = func(ctx context.Context) context.Context {
+			a, err := aes.NewAlgo(cfg.Crypto.AES)
 			runtime.Must(err)
 
 			msg := "this is a test"
@@ -64,11 +54,6 @@ func Run(params RunParams) {
 		op = "verified key"
 	}
 
-	opts := &runner.Options{
-		Lifecycle: params.Lifecycle,
-		Logger:    params.Logger,
-		Fn:        fn,
-	}
-
-	runner.Run("aes", op, opts)
+	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	runner.Start("aes", op, opts)
 }

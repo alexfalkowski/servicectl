@@ -4,44 +4,35 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/alexfalkowski/go-service/runtime"
+	"github.com/alexfalkowski/go-service/cmd"
 	tz "github.com/alexfalkowski/go-service/telemetry/logger/zap"
-	"github.com/alexfalkowski/servicectl/config"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 )
 
-// ModifyFn for cmd.
-type ModifyFn func(context.Context, *config.Config) context.Context
+// StartFn for cmd.
+type StartFn func(context.Context) context.Context
 
-// NoModify for cmd.
-var NoModify = func(ctx context.Context, _ *config.Config) context.Context { return ctx }
+// NoStart for cmd.
+var NoStart = func(ctx context.Context) context.Context { return ctx }
 
 // Options for runner.
 type Options struct {
 	Lifecycle fx.Lifecycle
 	Logger    *zap.Logger
-	Fn        ModifyFn
+	Fn        StartFn
 }
 
-// Run the cmd.
-func Run(name, operation string, opts *Options) {
+// Start the cmd.
+func Start(name, operation string, opts *Options) {
 	if opts.Fn == nil {
 		return
 	}
 
-	opts.Lifecycle.Append(fx.Hook{
-		OnStart: func(ctx context.Context) (err error) {
-			defer func() {
-				if r := recover(); r != nil {
-					err = runtime.ConvertRecover(r)
-				}
-			}()
+	cmd.Start(opts.Lifecycle, func(ctx context.Context) {
+		ctx = opts.Fn(ctx)
+		msg := fmt.Sprintf("%s: successfully %s", name, operation)
 
-			msg := fmt.Sprintf("%s: successfully %s", name, operation)
-			opts.Logger.Info(msg, tz.Meta(ctx)...)
-
-			return
-		},
+		opts.Logger.Info(msg, tz.Meta(ctx)...)
 	})
 }

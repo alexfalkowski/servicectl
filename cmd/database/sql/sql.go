@@ -7,7 +7,6 @@ import (
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/cmd/runner"
-	"github.com/alexfalkowski/servicectl/config"
 	"github.com/linxGnu/mssqlx"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
@@ -16,8 +15,8 @@ import (
 // VerifyFlag defines wether we should verify the connection or not.
 var VerifyFlag = flags.Bool()
 
-// RunParams for sql.
-type RunParams struct {
+// Params for sql.
+type Params struct {
 	fx.In
 
 	Lifecycle fx.Lifecycle
@@ -25,24 +24,19 @@ type RunParams struct {
 	DB        *mssqlx.DBs
 }
 
-// Run for sql.
-func Run(params RunParams) {
+// Start for sql.
+func Start(lc fx.Lifecycle, logger *zap.Logger, db *mssqlx.DBs) {
 	if !flags.IsSet(VerifyFlag) {
 		return
 	}
 
-	fn := func(ctx context.Context, _ *config.Config) context.Context {
-		err := errors.Join(params.DB.Ping()...)
+	fn := func(ctx context.Context) context.Context {
+		err := errors.Join(db.Ping()...)
 		runtime.Must(err)
 
 		return ctx
 	}
 
-	opts := &runner.Options{
-		Lifecycle: params.Lifecycle,
-		Logger:    params.Logger,
-		Fn:        fn,
-	}
-
-	runner.Run("pg", "verified connection", opts)
+	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	runner.Start("pg", "verified connection", opts)
 }
