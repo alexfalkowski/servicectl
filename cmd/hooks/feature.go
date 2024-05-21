@@ -11,7 +11,6 @@ import (
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/cmd/runner"
-	"github.com/alexfalkowski/servicectl/config"
 	hooks "github.com/standard-webhooks/standard-webhooks/libraries/go"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
@@ -25,38 +24,27 @@ var (
 	VerifyFlag = flags.Bool()
 )
 
-// RunParams for hooks.
-type RunParams struct {
-	fx.In
-
-	Lifecycle fx.Lifecycle
-	Logger    *zap.Logger
-	Webhook   *hooks.Webhook
-}
-
-// Run for hooks.
-func Run(params RunParams) {
+// Start for hooks.
+func Start(lc fx.Lifecycle, logger *zap.Logger, hook *hooks.Webhook) {
 	var (
-		fn runner.ModifyFn
+		fn runner.StartFn
 		op string
 	)
 
 	switch {
 	case flags.IsSet(RotateFlag):
-		fn = func(ctx context.Context, c *config.Config) context.Context {
+		fn = func(ctx context.Context) context.Context {
 			s, err := h.Generate()
 			runtime.Must(err)
-
-			c.Hooks.Secret = s
 
 			return meta.WithAttribute(ctx, "key", meta.String(s))
 		}
 		op = "rotated secret"
 	case flags.IsSet(VerifyFlag):
-		fn = func(ctx context.Context, _ *config.Config) context.Context {
+		fn = func(ctx context.Context) context.Context {
 			id, ts, p := "test", time.Now(), []byte("test")
 
-			sig, err := params.Webhook.Sign(id, ts, p)
+			sig, err := hook.Sign(id, ts, p)
 			runtime.Must(err)
 
 			h := http.Header{}
@@ -64,7 +52,7 @@ func Run(params RunParams) {
 			h.Add(hooks.HeaderWebhookSignature, sig)
 			h.Add(hooks.HeaderWebhookTimestamp, strconv.FormatInt(ts.Unix(), 10))
 
-			err = params.Webhook.Verify(p, h)
+			err = hook.Verify(p, h)
 			runtime.Must(err)
 
 			return meta.WithAttribute(ctx, "testMsg", meta.String(p))
@@ -72,11 +60,6 @@ func Run(params RunParams) {
 		op = "verified"
 	}
 
-	opts := &runner.Options{
-		Lifecycle: params.Lifecycle,
-		Logger:    params.Logger,
-		Fn:        fn,
-	}
-
-	runner.Run("hooks", op, opts)
+	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	runner.Start("hooks", op, opts)
 }

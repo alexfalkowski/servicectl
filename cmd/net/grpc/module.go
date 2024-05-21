@@ -12,5 +12,5 @@ var Module = fx.Options(
 	limiter.Module,
 	meta.Module,
 	grpc.Module,
-	fx.Invoke(Run),
+	fx.Invoke(Start),
 )

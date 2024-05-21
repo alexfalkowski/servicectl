@@ -8,5 +8,5 @@ import (
 // Module for fx.
 var Module = fx.Options(
 	redis.Module,
-	fx.Invoke(Run),
+	fx.Invoke(Start),
 )

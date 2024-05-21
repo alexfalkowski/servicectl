@@ -12,5 +12,5 @@ var Module = fx.Options(
 	limiter.Module,
 	meta.Module,
 	http.Module,
-	fx.Invoke(Run),
+	fx.Invoke(Start),
 )

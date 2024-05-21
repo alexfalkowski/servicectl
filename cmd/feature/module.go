@@ -8,5 +8,5 @@ import (
 // Module for fx.
 var Module = fx.Options(
 	feature.Module,
-	fx.Invoke(Run),
+	fx.Invoke(Start),
 )

@@ -7,7 +7,6 @@ import (
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/cmd/runner"
-	"github.com/alexfalkowski/servicectl/config"
 	"github.com/open-feature/go-sdk/openfeature"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
@@ -16,8 +15,8 @@ import (
 // VerifyFlag defines wether we should verify the connection or not.
 var VerifyFlag = flags.Bool()
 
-// RunParams for feature.
-type RunParams struct {
+// Params for feature.
+type Params struct {
 	fx.In
 
 	Lifecycle fx.Lifecycle
@@ -25,13 +24,13 @@ type RunParams struct {
 	Client    *openfeature.Client
 }
 
-// Run for feature.
-func Run(params RunParams) {
+// Start for feature.
+func Start(params Params) {
 	if !flags.IsSet(VerifyFlag) {
 		return
 	}
 
-	fn := func(ctx context.Context, _ *config.Config) context.Context {
+	fn := func(ctx context.Context) context.Context {
 		err := feature.Ping(ctx, params.Client)
 		runtime.Must(err)
 
@@ -44,5 +43,5 @@ func Run(params RunParams) {
 		Fn:        fn,
 	}
 
-	runner.Run("feature", "verified connection", opts)
+	runner.Start("feature", "verified connection", opts)
 }

@@ -21,35 +21,25 @@ var (
 	VerifyFlag = flags.Bool()
 )
 
-// RunParams for HMAC.
-type RunParams struct {
-	fx.In
-
-	Lifecycle fx.Lifecycle
-	Logger    *zap.Logger
-}
-
-// Run for HMAC.
-func Run(params RunParams) {
+// Start for HMAC.
+func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 	var (
-		fn runner.ModifyFn
+		fn runner.StartFn
 		op string
 	)
 
 	switch {
 	case flags.IsSet(RotateFlag):
-		fn = func(ctx context.Context, c *config.Config) context.Context {
+		fn = func(ctx context.Context) context.Context {
 			k, err := hmac.Generate()
 			runtime.Must(err)
-
-			c.Crypto.HMAC.Key = k
 
 			return meta.WithAttribute(ctx, "key", meta.String(k))
 		}
 		op = "rotated key"
 	case flags.IsSet(VerifyFlag):
-		fn = func(ctx context.Context, c *config.Config) context.Context {
-			a, err := hmac.NewAlgo(c.Crypto.HMAC)
+		fn = func(ctx context.Context) context.Context {
+			a, err := hmac.NewAlgo(cfg.Crypto.HMAC)
 			runtime.Must(err)
 
 			msg := "this is a test"
@@ -63,11 +53,6 @@ func Run(params RunParams) {
 		op = "verified key"
 	}
 
-	opts := &runner.Options{
-		Lifecycle: params.Lifecycle,
-		Logger:    params.Logger,
-		Fn:        fn,
-	}
-
-	runner.Run("hmac", op, opts)
+	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	runner.Start("hmac", op, opts)
 }
