@@ -21,8 +21,10 @@ feature:
   kind: flipt
   host: localhost:9000
   retry:
-      timeout: 1s
-      attempts: 3
+    attempts: 3
+    backoff: 100ms
+    timeout: 10s
+  timeout: 5s
 hooks:
   secret: secrets/hooks
 limiter:
@@ -44,12 +46,16 @@ transport:
   http:
     port: 11000
     retry:
-      timeout: 1s
       attempts: 3
+      backoff: 100ms
+      timeout: 10s
+    timeout: 5s
     user_agent: Client http/1.0
   grpc:
     port: 12000
     retry:
-      timeout: 1s
       attempts: 3
+      backoff: 100ms
+      timeout: 10s
+    timeout: 5s
     user_agent: Client grpc/1.0
