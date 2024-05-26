@@ -7,6 +7,40 @@ A tool for systems that use:
 - https://github.com/alexfalkowski/go-service-template
 - https://github.com/alexfalkowski/go-client-template
 
+## Commands
+
+The below is what the cli handles:
+
+```sh
+❯ ./servicectl --help
+servicectl
+
+Usage:
+  servicectl [command]
+
+Available Commands:
+  aes         AES crypto.
+  completion  Generate the autocompletion script for the specified shell
+  ed25519     Ed25519 crypto.
+  feature     Feature flags.
+  grpc        gRPC Server.
+  help        Help about any command
+  hmac        HMAC crypto.
+  hooks       Webhooks.
+  http        HTTP Server.
+  pg          Postgres DB.
+  redis       Redis cache.
+  rsa         RSA crypto.
+  token       Token.
+
+Flags:
+  -h, --help           help for servicectl
+  -i, --input string   input config location (format kind:location)
+  -v, --version        version for servicectl
+
+Use "servicectl [command] --help" for more information about a command.
+```
+
 ## Cache
 
 The ability to handle the cache configuration.
@@ -214,6 +248,30 @@ Flags:
 
 Global Flags:
   -i, --input string    input config location (format kind:location)
+```
+
+## Security
+
+The ability to handle the security configuration.
+
+### Token
+
+Handle token configuration.
+
+```sh
+❯ ./servicectl token --help
+Token.
+
+Usage:
+  servicectl token [flags]
+
+Flags:
+  -h, --help     help for token
+  -r, --rotate   rotate key
+  -v, --verify   verify key
+
+Global Flags:
+  -i, --input string   input config location (format kind:location)
 ```
 
 ## Development
