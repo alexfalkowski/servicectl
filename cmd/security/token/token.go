@@ -33,7 +33,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, algo argon2.Algo, tkn token.Toke
 	switch {
 	case flags.IsSet(RotateFlag):
 		fn = func(ctx context.Context) context.Context {
-			d, err := rand.GenerateString(16)
+			d, err := rand.GenerateString(32)
 			runtime.Must(err)
 
 			k := base64.StdEncoding.EncodeToString([]byte(d))
