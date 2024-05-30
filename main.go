@@ -29,7 +29,7 @@ type fn func(*sc.Command)
 
 func command() *sc.Command {
 	c := sc.New(cmd.Version)
-	c.RegisterInput("")
+	c.RegisterInput(c.Root(), "")
 
 	fns := []fn{cache, crypto, database, feature, hooks, net, tkn}
 	for _, f := range fns {
