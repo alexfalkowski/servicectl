@@ -10,7 +10,9 @@ import (
 	h "github.com/alexfalkowski/go-service/hooks"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
+	"github.com/alexfalkowski/servicectl/cmd/os"
 	"github.com/alexfalkowski/servicectl/cmd/runner"
+	"github.com/alexfalkowski/servicectl/config"
 	hooks "github.com/standard-webhooks/standard-webhooks/libraries/go"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
@@ -25,7 +27,7 @@ var (
 )
 
 // Start for hooks.
-func Start(lc fx.Lifecycle, logger *zap.Logger, hook *hooks.Webhook) {
+func Start(lc fx.Lifecycle, logger *zap.Logger, hook *hooks.Webhook, cfg *config.Config) {
 	var (
 		fn runner.StartFn
 		op string
@@ -37,7 +39,9 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, hook *hooks.Webhook) {
 			s, err := h.Generate()
 			runtime.Must(err)
 
-			return meta.WithAttribute(ctx, "key", meta.String(s))
+			os.WriteFile(string(cfg.Hooks.Secret), []byte(s))
+
+			return ctx
 		}
 		op = "rotated secret"
 	case flags.IsSet(VerifyFlag):

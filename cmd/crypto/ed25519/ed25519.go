@@ -7,6 +7,7 @@ import (
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
+	"github.com/alexfalkowski/servicectl/cmd/os"
 	"github.com/alexfalkowski/servicectl/cmd/runner"
 	"github.com/alexfalkowski/servicectl/config"
 	"go.uber.org/fx"
@@ -34,8 +35,8 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 			pub, pri, err := ed25519.Generate()
 			runtime.Must(err)
 
-			ctx = meta.WithAttribute(ctx, "public", meta.String(pub))
-			ctx = meta.WithAttribute(ctx, "private", meta.String(pri))
+			os.WriteFile(string(cfg.Crypto.Ed25519.Public), []byte(pub))
+			os.WriteFile(string(cfg.Crypto.Ed25519.Private), []byte(pri))
 
 			return ctx
 		}

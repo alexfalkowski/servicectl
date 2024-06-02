@@ -10,7 +10,9 @@ import (
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/go-service/security/token"
+	"github.com/alexfalkowski/servicectl/cmd/os"
 	"github.com/alexfalkowski/servicectl/cmd/runner"
+	"github.com/alexfalkowski/servicectl/config"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 )
@@ -24,7 +26,7 @@ var (
 )
 
 // Start for tokens.
-func Start(lc fx.Lifecycle, logger *zap.Logger, algo argon2.Algo, tkn token.Tokenizer) {
+func Start(lc fx.Lifecycle, logger *zap.Logger, algo argon2.Algo, tkn token.Tokenizer, cfg *config.Config) {
 	var (
 		fn runner.StartFn
 		op string
@@ -36,15 +38,12 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, algo argon2.Algo, tkn token.Toke
 			d, err := rand.GenerateString(32)
 			runtime.Must(err)
 
-			k := base64.StdEncoding.EncodeToString([]byte(d))
+			os.WriteFile(string(cfg.Token.Key), []byte(base64.StdEncoding.EncodeToString([]byte(d))))
 
 			h, err := algo.Generate(d)
 			runtime.Must(err)
 
-			ctx = meta.WithAttribute(ctx, "key", meta.String(k))
-			ctx = meta.WithAttribute(ctx, "hash", meta.String(h))
-
-			return ctx
+			return meta.WithAttribute(ctx, "hash", meta.String(h))
 		}
 		op = "rotated key and hash"
 	case flags.IsSet(VerifyFlag):
