@@ -7,6 +7,7 @@ import (
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
+	"github.com/alexfalkowski/servicectl/cmd/os"
 	"github.com/alexfalkowski/servicectl/cmd/runner"
 	"github.com/alexfalkowski/servicectl/config"
 	"go.uber.org/fx"
@@ -34,7 +35,9 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 			k, err := aes.Generate()
 			runtime.Must(err)
 
-			return meta.WithAttribute(ctx, "key", meta.String(k))
+			os.WriteFile(string(cfg.Crypto.AES.Key), []byte(k))
+
+			return ctx
 		}
 		op = "rotated key"
 	case flags.IsSet(VerifyFlag):

@@ -5,3 +5,4 @@ vendor
 *.out
 /servicectl
 test/reports/*_client.yml
+*-new
