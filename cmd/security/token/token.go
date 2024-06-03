@@ -4,8 +4,6 @@ import (
 	"context"
 	"encoding/base64"
 
-	"github.com/alexfalkowski/go-service/crypto/argon2"
-	"github.com/alexfalkowski/go-service/crypto/rand"
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
@@ -26,7 +24,7 @@ var (
 )
 
 // Start for tokens.
-func Start(lc fx.Lifecycle, logger *zap.Logger, algo argon2.Algo, tkn token.Tokenizer, cfg *config.Config) {
+func Start(lc fx.Lifecycle, logger *zap.Logger, tkn token.Tokenizer, cfg *config.Config) {
 	var (
 		fn runner.StartFn
 		op string
@@ -35,13 +33,10 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, algo argon2.Algo, tkn token.Toke
 	switch {
 	case flags.IsSet(RotateFlag):
 		fn = func(ctx context.Context) context.Context {
-			d, err := rand.GenerateString(32)
+			k, h, err := token.Generate()
 			runtime.Must(err)
 
-			os.WriteFile(string(cfg.Token.Key), []byte(base64.StdEncoding.EncodeToString([]byte(d))))
-
-			h, err := algo.Generate(d)
-			runtime.Must(err)
+			os.WriteFile(string(cfg.Token.Key), []byte(base64.StdEncoding.EncodeToString([]byte(k))))
 
 			return meta.WithAttribute(ctx, "hash", meta.String(h))
 		}
