@@ -3,7 +3,7 @@ module github.com/alexfalkowski/servicectl
 go 1.22.4
 
 require (
-	github.com/alexfalkowski/go-service v1.213.0
+	github.com/alexfalkowski/go-service v1.213.3
 	github.com/linxGnu/mssqlx v1.1.8
 	github.com/open-feature/go-sdk v1.12.0
 	github.com/standard-webhooks/standard-webhooks/libraries v0.0.0-20240515140834-bd08ac9ba53b
@@ -92,7 +92,7 @@ require (
 	github.com/tklauser/go-sysconf v0.3.13 // indirect
 	github.com/tklauser/numcpus v0.7.0 // indirect
 	github.com/ulule/limiter/v3 v3.11.2 // indirect
-	github.com/urfave/negroni/v3 v3.1.0 // indirect
+	github.com/urfave/negroni/v3 v3.1.1 // indirect
 	github.com/vmihailenco/go-tinylfu v0.2.2 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
