@@ -1,6 +1,6 @@
 module github.com/alexfalkowski/servicectl
 
-go 1.22.3
+go 1.22.4
 
 require (
 	github.com/alexfalkowski/go-service v1.213.0
