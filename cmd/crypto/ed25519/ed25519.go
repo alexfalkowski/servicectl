@@ -47,9 +47,9 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 			runtime.Must(err)
 
 			msg := "this is a test"
-			enc := a.Generate(msg)
+			enc := a.Sign(msg)
 
-			err = a.Compare(enc, msg)
+			err = a.Verify(enc, msg)
 			runtime.Must(err)
 
 			return meta.WithAttribute(ctx, "testMsg", meta.String(msg))
