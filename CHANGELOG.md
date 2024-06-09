@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [v0.42.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.42.0) - 2024-06-09
+
+- [`f99937d`](https://github.com/alexfalkowski/servicectl/commit/f99937d994b51448069e0ece819059ad9d44182a) feat(deps): upgraded github.com/alexfalkowski/go-service to v1.214.1 (#74)
+- [`6449058`](https://github.com/alexfalkowski/servicectl/commit/6449058a877f9fcd4fdd689dc7412359c0d27b19) build(deps): bump bin from `955891d` to `897d5f1` (#73)
+- [`8312c0f`](https://github.com/alexfalkowski/servicectl/commit/8312c0f8313cc9a4fbe5cabe2932f28700d13f48) build(ci): fix bundler dependabot (#72)
+- [`0f04738`](https://github.com/alexfalkowski/servicectl/commit/0f04738a26d6aeca690be8b60fb8d93ce263dad9) build(ci): add dependabot (#71)
+- [`233994c`](https://github.com/alexfalkowski/servicectl/commit/233994cde23ab14501363a6d7fe9f273c2804fa9) build(ci): use alexfalkowski/go:1.22 (#70)
+
 ## [v0.41.2](https://github.com/alexfalkowski/servicectl/releases/tag/v0.41.2) - 2024-06-05
 
 - [`ed085a7`](https://github.com/alexfalkowski/servicectl/commit/ed085a72554614a893eaf9166c786878abfad7b6) fix(deps): upgraded github.com/alexfalkowski/go-service to v1.213.3 (#69)
