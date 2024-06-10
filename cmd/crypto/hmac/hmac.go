@@ -35,7 +35,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 			k, err := hmac.Generate()
 			runtime.Must(err)
 
-			os.WriteFile(string(cfg.Crypto.HMAC.Key), []byte(k))
+			os.WriteFile(cfg.Crypto.HMAC.Key, []byte(k))
 
 			return ctx
 		}
@@ -46,7 +46,9 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 			runtime.Must(err)
 
 			msg := "this is a test"
-			enc := a.Sign(msg)
+
+			enc, err := a.Sign(msg)
+			runtime.Must(err)
 
 			err = a.Verify(enc, msg)
 			runtime.Must(err)

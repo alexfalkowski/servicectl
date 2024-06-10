@@ -35,8 +35,8 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 			pub, pri, err := ed25519.Generate()
 			runtime.Must(err)
 
-			os.WriteFile(string(cfg.Crypto.Ed25519.Public), []byte(pub))
-			os.WriteFile(string(cfg.Crypto.Ed25519.Private), []byte(pri))
+			os.WriteFile(cfg.Crypto.Ed25519.Public, []byte(pub))
+			os.WriteFile(cfg.Crypto.Ed25519.Private, []byte(pri))
 
 			return ctx
 		}
@@ -47,7 +47,9 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 			runtime.Must(err)
 
 			msg := "this is a test"
-			enc := a.Sign(msg)
+
+			enc, err := a.Sign(msg)
+			runtime.Must(err)
 
 			err = a.Verify(enc, msg)
 			runtime.Must(err)

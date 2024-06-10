@@ -39,7 +39,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, hook *hooks.Webhook, cfg *config
 			s, err := h.Generate()
 			runtime.Must(err)
 
-			os.WriteFile(string(cfg.Hooks.Secret), []byte(s))
+			os.WriteFile(cfg.Hooks.Secret, []byte(s))
 
 			return ctx
 		}
