@@ -35,7 +35,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 			k, err := aes.Generate()
 			runtime.Must(err)
 
-			os.WriteFile(string(cfg.Crypto.AES.Key), []byte(k))
+			os.WriteFile(cfg.Crypto.AES.Key, []byte(k))
 
 			return ctx
 		}

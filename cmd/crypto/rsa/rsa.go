@@ -35,8 +35,8 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 			pub, pri, err := rsa.Generate()
 			runtime.Must(err)
 
-			os.WriteFile(string(cfg.Crypto.RSA.Public), []byte(pub))
-			os.WriteFile(string(cfg.Crypto.RSA.Private), []byte(pri))
+			os.WriteFile(cfg.Crypto.RSA.Public, []byte(pub))
+			os.WriteFile(cfg.Crypto.RSA.Private, []byte(pri))
 
 			return ctx
 		}

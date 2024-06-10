@@ -36,7 +36,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, tkn token.Tokenizer, cfg *config
 			k, h, err := token.Generate()
 			runtime.Must(err)
 
-			os.WriteFile(string(cfg.Token.Key), []byte(base64.StdEncoding.EncodeToString([]byte(k))))
+			os.WriteFile(cfg.Token.Key, []byte(base64.StdEncoding.EncodeToString([]byte(k))))
 
 			return meta.WithAttribute(ctx, "hash", meta.String(h))
 		}
