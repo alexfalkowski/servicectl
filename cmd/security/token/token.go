@@ -33,10 +33,10 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, tkn token.Tokenizer, cfg *config
 	switch {
 	case flags.IsSet(RotateFlag):
 		fn = func(ctx context.Context) context.Context {
-			k, h, err := token.Generate()
+			k, h, err := tkn.GenerateConfig()
 			runtime.Must(err)
 
-			os.WriteFile(cfg.Token.Key, []byte(base64.StdEncoding.EncodeToString([]byte(k))))
+			os.WriteFile(cfg.Token.Argon2.Key, []byte(base64.StdEncoding.EncodeToString([]byte(k))))
 
 			return meta.WithAttribute(ctx, "hash", meta.String(h))
 		}
