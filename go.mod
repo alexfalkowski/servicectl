@@ -3,7 +3,7 @@ module github.com/alexfalkowski/servicectl
 go 1.22.4
 
 require (
-	github.com/alexfalkowski/go-service v1.217.0
+	github.com/alexfalkowski/go-service v1.217.1
 	github.com/linxGnu/mssqlx v1.1.8
 	github.com/open-feature/go-sdk v1.12.0
 	github.com/standard-webhooks/standard-webhooks/libraries v0.0.0-20240515140834-bd08ac9ba53b
@@ -124,6 +124,6 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20240520151616-dc85e6b867a5 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240515191416-fc5f0ca64291 // indirect
 	google.golang.org/grpc v1.64.0 // indirect
-	google.golang.org/protobuf v1.34.1 // indirect
+	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
