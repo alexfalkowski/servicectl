@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [v0.46.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.46.0) - 2024-06-18
+
+- [`4c03ad5`](https://github.com/alexfalkowski/servicectl/commit/4c03ad5d80a6d0b4b12d186d543d801c019fe89b) feat(deps): bump github.com/alexfalkowski/go-service from 1.217.2 to 1.217.3 (#82)
+- [`7a78f54`](https://github.com/alexfalkowski/servicectl/commit/7a78f54be9a3691eba9a4ff6dae51d556e5f79f5) test(deps): bump rspec-expectations from 3.13.0 to 3.13.1 in /test (#81)
+
 ## [v0.45.3](https://github.com/alexfalkowski/servicectl/releases/tag/v0.45.3) - 2024-06-13
 
 - [`cc880af`](https://github.com/alexfalkowski/servicectl/commit/cc880afdeb6b2555fb595f316a3be0cf9b1f2a6d) fix(deps): upgraded github.com/alexfalkowski/go-service to v1.217.2 (#80)
