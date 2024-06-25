@@ -3,7 +3,7 @@ module github.com/alexfalkowski/servicectl
 go 1.22.4
 
 require (
-	github.com/alexfalkowski/go-service v1.217.3
+	github.com/alexfalkowski/go-service v1.220.0
 	github.com/linxGnu/mssqlx v1.1.8
 	github.com/open-feature/go-sdk v1.12.0
 	github.com/standard-webhooks/standard-webhooks/libraries v0.0.0-20240515140834-bd08ac9ba53b
@@ -32,6 +32,7 @@ require (
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/docker/go-units v0.4.0 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
+	github.com/elnormous/contenttype v1.0.4 // indirect
 	github.com/felixge/fgprof v0.9.4 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
