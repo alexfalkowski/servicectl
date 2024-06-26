@@ -7,7 +7,7 @@ require (
 	github.com/linxGnu/mssqlx v1.1.8
 	github.com/open-feature/go-sdk v1.12.0
 	github.com/standard-webhooks/standard-webhooks/libraries v0.0.0-20240515140834-bd08ac9ba53b
-	go.uber.org/fx v1.22.0
+	go.uber.org/fx v1.22.1
 	go.uber.org/zap v1.27.0
 )
 
