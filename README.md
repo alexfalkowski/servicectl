@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/alexfalkowski/servicectl.svg?style=svg)](https://circleci.com/gh/alexfalkowski/servicectl)
+[![codecov](https://codecov.io/gh/alexfalkowski/servicectl/graph/badge.svg?token=7GMMUXLU6Y)](https://codecov.io/gh/alexfalkowski/servicectl)
 
 # System Control
 
