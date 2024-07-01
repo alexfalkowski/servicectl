@@ -1,5 +1,8 @@
-[![CircleCI](https://circleci.com/gh/alexfalkowski/servicectl.svg?style=svg)](https://circleci.com/gh/alexfalkowski/servicectl)
+[![CircleCI](https://circleci.com/gh/alexfalkowski/servicectl.svg?style=shield)](https://circleci.com/gh/alexfalkowski/servicectl)
 [![codecov](https://codecov.io/gh/alexfalkowski/servicectl/graph/badge.svg?token=7GMMUXLU6Y)](https://codecov.io/gh/alexfalkowski/servicectl)
+[![Go Report Card](https://goreportcard.com/badge/github.com/alexfalkowski/servicectl)](https://goreportcard.com/report/github.com/alexfalkowski/servicectl)
+[![Go Reference](https://pkg.go.dev/badge/github.com/alexfalkowski/servicectl.svg)](https://pkg.go.dev/github.com/alexfalkowski/servicectl)
+[![Stability: Active](https://masterminds.github.io/stability/active.svg)](https://masterminds.github.io/stability/active.html)
 
 # System Control
 
