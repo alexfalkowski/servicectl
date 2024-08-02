@@ -12,7 +12,6 @@ import (
 	"github.com/alexfalkowski/servicectl/cmd/crypto/hmac"
 	"github.com/alexfalkowski/servicectl/cmd/crypto/rsa"
 	"github.com/alexfalkowski/servicectl/cmd/database/sql"
-	cf "github.com/alexfalkowski/servicectl/cmd/feature"
 	ch "github.com/alexfalkowski/servicectl/cmd/hooks"
 	"github.com/alexfalkowski/servicectl/cmd/net/grpc"
 	"github.com/alexfalkowski/servicectl/cmd/net/http"
@@ -31,7 +30,7 @@ func command() *sc.Command {
 	c := sc.New(cmd.Version)
 	c.RegisterInput(c.Root(), "")
 
-	fns := []fn{cache, crypto, database, feature, hooks, net, tkn}
+	fns := []fn{cache, crypto, database, hooks, net, tkn}
 	for _, f := range fns {
 		f(c)
 	}
@@ -65,11 +64,6 @@ func crypto(c *sc.Command) {
 func database(c *sc.Command) {
 	p := c.AddClientCommand("pg", "Postgres DB.", cmd.Module, sql.Module)
 	flags.BoolVar(p, sql.VerifyFlag, "verify", "v", false, "verify connection")
-}
-
-func feature(c *sc.Command) {
-	f := c.AddClientCommand("feature", "Feature flags.", cmd.Module, cf.Module)
-	flags.BoolVar(f, cf.VerifyFlag, "verify", "v", false, "verify connection")
 }
 
 func hooks(c *sc.Command) {
