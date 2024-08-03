@@ -17,14 +17,6 @@ crypto:
   rsa:
     public: secrets/rsa_public
     private: secrets/rsa_private
-feature:
-  kind: flipt
-  host: localhost:9000
-  retry:
-    attempts: 3
-    backoff: 100ms
-    timeout: 10s
-  timeout: 5s
 hooks:
   secret: secrets/hooks
 limiter:
@@ -49,7 +41,7 @@ token:
     hash: $argon2id$v=19$m=65536,t=3,p=4$Pl+/KEOE1lEYXJAUKb+JVg$DxBhEwsBuMPKGCqz/4UHNSvylB3BHgC8OClmnr0Uxc4
 transport:
   http:
-    port: 11000
+    address: :11000
     retry:
       attempts: 3
       backoff: 100ms
@@ -57,7 +49,7 @@ transport:
     timeout: 5s
     user_agent: Client http/1.0
   grpc:
-    port: 12000
+    address: :12000
     retry:
       attempts: 3
       backoff: 100ms
