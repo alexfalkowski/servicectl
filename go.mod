@@ -3,7 +3,7 @@ module github.com/alexfalkowski/servicectl
 go 1.22.5
 
 require (
-	github.com/alexfalkowski/go-service v1.267.0
+	github.com/alexfalkowski/go-service v1.268.0
 	github.com/linxGnu/mssqlx v1.1.8
 	github.com/standard-webhooks/standard-webhooks/libraries v0.0.0-20240715193043-f20cd6aa01c7
 	go.uber.org/fx v1.22.1
