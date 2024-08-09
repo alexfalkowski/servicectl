@@ -26,7 +26,6 @@ Available Commands:
   aes         AES crypto.
   completion  Generate the autocompletion script for the specified shell
   ed25519     Ed25519 crypto.
-  feature     Feature flags.
   grpc        gRPC Server.
   help        Help about any command
   hmac        HMAC crypto.
