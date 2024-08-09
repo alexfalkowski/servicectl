@@ -15,7 +15,6 @@ import (
 	ch "github.com/alexfalkowski/servicectl/cmd/hooks"
 	"github.com/alexfalkowski/servicectl/cmd/net/grpc"
 	"github.com/alexfalkowski/servicectl/cmd/net/http"
-	"github.com/alexfalkowski/servicectl/cmd/security/token"
 )
 
 func main() {
@@ -30,7 +29,7 @@ func command() *sc.Command {
 	c := sc.New(cmd.Version)
 	c.RegisterInput(c.Root(), "")
 
-	fns := []fn{cache, crypto, database, hooks, net, tkn}
+	fns := []fn{cache, crypto, database, hooks, net}
 	for _, f := range fns {
 		f(c)
 	}
@@ -78,10 +77,4 @@ func net(c *sc.Command) {
 
 	g := c.AddClientCommand("grpc", "gRPC Server.", cmd.Module, grpc.Module)
 	flags.BoolVar(g, grpc.VerifyFlag, "verify", "v", false, "verify server")
-}
-
-func tkn(c *sc.Command) {
-	s := c.AddClientCommand("token", "Token.", cmd.Module, token.Module)
-	flags.BoolVar(s, token.RotateFlag, "rotate", "r", false, "rotate key")
-	flags.BoolVar(s, token.VerifyFlag, "verify", "v", false, "verify key")
 }
