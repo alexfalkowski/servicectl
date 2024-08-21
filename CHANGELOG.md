@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [v0.87.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.87.0) - 2024-08-21
+
+- [`dd5b571`](https://github.com/alexfalkowski/servicectl/commit/dd5b57131fd93bf57c1384379539c53a3ec772db) feat(deps): bump github.com/alexfalkowski/go-service from 1.277.0 to 1.278.0 (#158)
+- [`22e553a`](https://github.com/alexfalkowski/servicectl/commit/22e553a9690b999e90776f4ad9b923c0fb411e5b) test(deps): bump rspec-expectations from 3.13.1 to 3.13.2 in /test (#161)
+- [`b95522d`](https://github.com/alexfalkowski/servicectl/commit/b95522d29a06ca18c13c076d4e4885e35cccdf0f) test(deps): bump ruby-lsp from 0.17.14 to 0.17.15 in /test (#160)
+- [`216a5b5`](https://github.com/alexfalkowski/servicectl/commit/216a5b59382bd2696dfdcab458e558e79d3334d2) test(deps): bump ruby-lsp from 0.17.13 to 0.17.14 in /test (#159)
+
 ## [v0.86.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.86.0) - 2024-08-17
 
 - [`243942f`](https://github.com/alexfalkowski/servicectl/commit/243942f42166077bb87ed462a1e3f0562c2a42a4) feat(deps): bump github.com/alexfalkowski/go-service from 1.276.0 to 1.277.0 (#157)
