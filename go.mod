@@ -5,7 +5,7 @@ go 1.23
 toolchain go1.23.0
 
 require (
-	github.com/alexfalkowski/go-service v1.288.0
+	github.com/alexfalkowski/go-service v1.288.1
 	github.com/linxGnu/mssqlx v1.1.8
 	github.com/standard-webhooks/standard-webhooks/libraries v0.0.0-20240801094505-379db9ac0924
 	go.uber.org/fx v1.22.2
@@ -87,7 +87,7 @@ require (
 	github.com/rs/cors v1.11.1 // indirect
 	github.com/secure-io/siv-go v0.0.0-20180922214919-5ff40651e2c4 // indirect
 	github.com/sethvargo/go-limiter v1.0.0 // indirect
-	github.com/shirou/gopsutil/v4 v4.24.7 // indirect
+	github.com/shirou/gopsutil/v4 v4.24.8 // indirect
 	github.com/shoenig/go-m1cpu v0.1.6 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/sony/gobreaker v1.0.0 // indirect
