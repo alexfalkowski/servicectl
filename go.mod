@@ -5,9 +5,9 @@ go 1.23
 toolchain go1.23.0
 
 require (
-	github.com/alexfalkowski/go-service v1.303.0
+	github.com/alexfalkowski/go-service v1.303.1
 	github.com/linxGnu/mssqlx v1.1.8
-	github.com/standard-webhooks/standard-webhooks/libraries v0.0.0-20240924003954-e9bdd77cda04
+	github.com/standard-webhooks/standard-webhooks/libraries v0.0.0-20241007201626-bcb222ad648f
 	go.uber.org/fx v1.22.2
 	go.uber.org/zap v1.27.0
 )
@@ -61,7 +61,7 @@ require (
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jmoiron/sqlx v1.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.17.10 // indirect
+	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/lib/pq v1.10.9 // indirect
 	github.com/lufia/plan9stats v0.0.0-20240909124753-873cd0166683 // indirect
 	github.com/matthewhartstonge/argon2 v1.0.1 // indirect
