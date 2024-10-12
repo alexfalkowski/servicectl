@@ -10,7 +10,7 @@ RUN go mod download
 COPY . ./
 RUN CGO_ENABLED=0 go build -ldflags="-s -w -X 'github.com/alexfalkowski/servicectl/cmd.Version=${version}'" -a -o servicectl main.go
 
-FROM gcr.io/distroless/base-debian12
+FROM gcr.io/distroless/static
 
 WORKDIR /
 
