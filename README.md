@@ -34,7 +34,7 @@ Available Commands:
   pg          Postgres DB.
   redis       Redis cache.
   rsa         RSA crypto.
-  token       Token.
+  token       Security tokens.
 
 Flags:
   -h, --help           help for servicectl
@@ -263,15 +263,14 @@ Handle token configuration.
 
 ```sh
 ❯ ./servicectl token --help
-Token.
+Security tokens.
 
 Usage:
   servicectl token [flags]
 
 Flags:
   -h, --help     help for token
-  -r, --rotate   rotate key
-  -v, --verify   verify key
+  -r, --rotate   rotate secret
 
 Global Flags:
   -i, --input string   input config location (format kind:location)

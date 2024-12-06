@@ -18,6 +18,6 @@ Then('we should have a succesful hook verification') do
   expect(@status.exitstatus).to eq(0)
 end
 
-Then('we should have a succesfully rotated the hook secret') do
+Then('we should have a succesful rotated the hook secret') do
   expect(@status.exitstatus).to eq(0)
 end
