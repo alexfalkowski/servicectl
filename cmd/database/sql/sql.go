@@ -26,7 +26,7 @@ type Params struct {
 
 // Start for sql.
 func Start(lc fx.Lifecycle, logger *zap.Logger, db *mssqlx.DBs) {
-	if !flags.IsSet(VerifyFlag) {
+	if !flags.IsBoolSet(VerifyFlag) {
 		return
 	}
 

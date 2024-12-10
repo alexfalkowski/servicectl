@@ -30,18 +30,21 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 	)
 
 	switch {
-	case flags.IsSet(RotateFlag):
+	case flags.IsBoolSet(RotateFlag):
 		fn = func(ctx context.Context) context.Context {
 			pub, pri, err := rsa.Generate()
 			runtime.Must(err)
 
-			os.WriteFile(cfg.Crypto.RSA.Public, []byte(pub))
-			os.WriteFile(cfg.Crypto.RSA.Private, []byte(pri))
+			err = os.WriteFile(cfg.Crypto.RSA.Public, []byte(pub))
+			runtime.Must(err)
+
+			err = os.WriteFile(cfg.Crypto.RSA.Private, []byte(pri))
+			runtime.Must(err)
 
 			return ctx
 		}
 		op = "rotated keys"
-	case flags.IsSet(VerifyFlag):
+	case flags.IsBoolSet(VerifyFlag):
 		fn = func(ctx context.Context) context.Context {
 			a, err := rsa.NewAlgo(cfg.Crypto.RSA)
 			runtime.Must(err)

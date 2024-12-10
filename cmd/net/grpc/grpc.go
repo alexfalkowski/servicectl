@@ -13,7 +13,7 @@ var VerifyFlag = flags.Bool()
 
 // Start for grpc.
 func Start(lc fx.Lifecycle, logger *zap.Logger, _ *grpc.Server) {
-	if !flags.IsSet(VerifyFlag) {
+	if !flags.IsBoolSet(VerifyFlag) {
 		return
 	}
 

@@ -34,17 +34,18 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, hook *hooks.Webhook, cfg *config
 	)
 
 	switch {
-	case flags.IsSet(RotateFlag):
+	case flags.IsBoolSet(RotateFlag):
 		fn = func(ctx context.Context) context.Context {
 			s, err := h.Generate()
 			runtime.Must(err)
 
-			os.WriteFile(cfg.Hooks.Secret, []byte(s))
+			err = os.WriteFile(cfg.Hooks.Secret, []byte(s))
+			runtime.Must(err)
 
 			return ctx
 		}
 		op = "rotated secret"
-	case flags.IsSet(VerifyFlag):
+	case flags.IsBoolSet(VerifyFlag):
 		fn = func(ctx context.Context) context.Context {
 			id, ts, p := "test", time.Now(), []byte("test")
 

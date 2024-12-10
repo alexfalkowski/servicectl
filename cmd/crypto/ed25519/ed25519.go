@@ -30,18 +30,21 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 	)
 
 	switch {
-	case flags.IsSet(RotateFlag):
+	case flags.IsBoolSet(RotateFlag):
 		fn = func(ctx context.Context) context.Context {
 			pub, pri, err := ed25519.Generate()
 			runtime.Must(err)
 
-			os.WriteFile(cfg.Crypto.Ed25519.Public, []byte(pub))
-			os.WriteFile(cfg.Crypto.Ed25519.Private, []byte(pri))
+			err = os.WriteFile(cfg.Crypto.Ed25519.Public, []byte(pub))
+			runtime.Must(err)
+
+			err = os.WriteFile(cfg.Crypto.Ed25519.Private, []byte(pri))
+			runtime.Must(err)
 
 			return ctx
 		}
 		op = "rotated keys"
-	case flags.IsSet(VerifyFlag):
+	case flags.IsBoolSet(VerifyFlag):
 		fn = func(ctx context.Context) context.Context {
 			a, err := ed25519.NewAlgo(cfg.Crypto.Ed25519)
 			runtime.Must(err)

@@ -18,7 +18,7 @@ var RotateFlag = flags.Bool()
 
 // Start for token.
 func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
-	if !flags.IsSet(RotateFlag) {
+	if !flags.IsBoolSet(RotateFlag) {
 		return
 	}
 
@@ -26,7 +26,8 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 		k, err := rand.GenerateString(64)
 		runtime.Must(err)
 
-		os.WriteFile(cfg.Token.Key, []byte(k))
+		err = os.WriteBase64File(cfg.Token.Key, []byte(k))
+		runtime.Must(err)
 
 		return ctx
 	}

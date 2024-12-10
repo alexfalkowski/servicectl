@@ -30,17 +30,18 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 	)
 
 	switch {
-	case flags.IsSet(RotateFlag):
+	case flags.IsBoolSet(RotateFlag):
 		fn = func(ctx context.Context) context.Context {
 			k, err := aes.Generate()
 			runtime.Must(err)
 
-			os.WriteFile(cfg.Crypto.AES.Key, []byte(k))
+			err = os.WriteBase64File(cfg.Crypto.AES.Key, []byte(k))
+			runtime.Must(err)
 
 			return ctx
 		}
 		op = "rotated key"
-	case flags.IsSet(VerifyFlag):
+	case flags.IsBoolSet(VerifyFlag):
 		fn = func(ctx context.Context) context.Context {
 			a, err := aes.NewAlgo(cfg.Crypto.AES)
 			runtime.Must(err)
