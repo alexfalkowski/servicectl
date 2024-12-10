@@ -16,7 +16,7 @@ var VerifyFlag = flags.Bool()
 
 // Start for redis.
 func Start(lc fx.Lifecycle, logger *zap.Logger, client redis.Client) {
-	if !flags.IsSet(VerifyFlag) {
+	if !flags.IsBoolSet(VerifyFlag) {
 		return
 	}
 
