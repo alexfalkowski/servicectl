@@ -39,48 +39,48 @@ func command() *sc.Command {
 }
 
 func cache(c *sc.Command) {
-	r := c.AddClientCommand("redis", "Redis cache.", cmd.Module, redis.Module)
+	r := c.AddClient("redis", "Redis cache.", cmd.Module, redis.Module)
 	flags.BoolVar(r, redis.VerifyFlag, "verify", "v", false, "verify connection")
 }
 
 func crypto(c *sc.Command) {
-	ac := c.AddClientCommand("aes", "AES crypto.", cmd.Module, aes.Module)
+	ac := c.AddClient("aes", "AES crypto.", cmd.Module, aes.Module)
 	flags.BoolVar(ac, aes.RotateFlag, "rotate", "r", false, "rotate key")
 	flags.BoolVar(ac, aes.VerifyFlag, "verify", "v", false, "verify key")
 
-	ah := c.AddClientCommand("hmac", "HMAC crypto.", cmd.Module, hmac.Module)
+	ah := c.AddClient("hmac", "HMAC crypto.", cmd.Module, hmac.Module)
 	flags.BoolVar(ah, hmac.RotateFlag, "rotate", "r", false, "rotate key")
 	flags.BoolVar(ah, hmac.VerifyFlag, "verify", "v", false, "verify key")
 
-	ar := c.AddClientCommand("rsa", "RSA crypto.", cmd.Module, rsa.Module)
+	ar := c.AddClient("rsa", "RSA crypto.", cmd.Module, rsa.Module)
 	flags.BoolVar(ar, rsa.RotateFlag, "rotate", "r", false, "rotate keys")
 	flags.BoolVar(ar, rsa.VerifyFlag, "verify", "v", false, "verify keys")
 
-	ae := c.AddClientCommand("ed25519", "Ed25519 crypto.", cmd.Module, ed25519.Module)
+	ae := c.AddClient("ed25519", "Ed25519 crypto.", cmd.Module, ed25519.Module)
 	flags.BoolVar(ae, ed25519.RotateFlag, "rotate", "r", false, "rotate keys")
 	flags.BoolVar(ae, ed25519.VerifyFlag, "verify", "v", false, "verify keys")
 }
 
 func database(c *sc.Command) {
-	p := c.AddClientCommand("pg", "Postgres DB.", cmd.Module, sql.Module)
+	p := c.AddClient("pg", "Postgres DB.", cmd.Module, sql.Module)
 	flags.BoolVar(p, sql.VerifyFlag, "verify", "v", false, "verify connection")
 }
 
 func hooks(c *sc.Command) {
-	h := c.AddClientCommand("hooks", "Webhooks.", cmd.Module, ch.Module)
+	h := c.AddClient("hooks", "Webhooks.", cmd.Module, ch.Module)
 	flags.BoolVar(h, ch.RotateFlag, "rotate", "r", false, "rotate secret")
 	flags.BoolVar(h, ch.VerifyFlag, "verify", "v", false, "verify webhook")
 }
 
 func net(c *sc.Command) {
-	h := c.AddClientCommand("http", "HTTP Server.", cmd.Module, http.Module)
+	h := c.AddClient("http", "HTTP Server.", cmd.Module, http.Module)
 	flags.BoolVar(h, http.VerifyFlag, "verify", "v", false, "verify server")
 
-	g := c.AddClientCommand("grpc", "gRPC Server.", cmd.Module, grpc.Module)
+	g := c.AddClient("grpc", "gRPC Server.", cmd.Module, grpc.Module)
 	flags.BoolVar(g, grpc.VerifyFlag, "verify", "v", false, "verify server")
 }
 
 func tkn(c *sc.Command) {
-	t := c.AddClientCommand("token", "Security tokens.", cmd.Module, token.Module)
+	t := c.AddClient("token", "Security tokens.", cmd.Module, token.Module)
 	flags.BoolVar(t, token.RotateFlag, "rotate", "r", false, "rotate secret")
 }
