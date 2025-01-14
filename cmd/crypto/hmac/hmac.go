@@ -23,7 +23,7 @@ var (
 )
 
 // Start for HMAC.
-func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
+func Start(lc fx.Lifecycle, logger *zap.Logger, gen *hmac.Generator, cfg *config.Config) {
 	var (
 		fn runner.StartFn
 		op string
@@ -32,7 +32,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 	switch {
 	case flags.IsBoolSet(RotateFlag):
 		fn = func(ctx context.Context) context.Context {
-			k, err := hmac.Generate()
+			k, err := gen.Generate()
 			runtime.Must(err)
 
 			err = os.WriteBase64File(cfg.Crypto.HMAC.Key, []byte(k))
@@ -43,7 +43,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 		op = "rotated key"
 	case flags.IsBoolSet(VerifyFlag):
 		fn = func(ctx context.Context) context.Context {
-			a, err := hmac.NewAlgo(cfg.Crypto.HMAC)
+			a, err := hmac.NewSigner(cfg.Crypto.HMAC)
 			runtime.Must(err)
 
 			msg := "this is a test"

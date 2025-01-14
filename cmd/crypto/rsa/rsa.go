@@ -3,6 +3,7 @@ package rsa
 import (
 	"context"
 
+	"github.com/alexfalkowski/go-service/crypto/rand"
 	"github.com/alexfalkowski/go-service/crypto/rsa"
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/meta"
@@ -23,7 +24,7 @@ var (
 )
 
 // Start for AES.
-func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
+func Start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, gen *rsa.Generator, cfg *config.Config) {
 	var (
 		fn runner.StartFn
 		op string
@@ -32,7 +33,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 	switch {
 	case flags.IsBoolSet(RotateFlag):
 		fn = func(ctx context.Context) context.Context {
-			pub, pri, err := rsa.Generate()
+			pub, pri, err := gen.Generate()
 			runtime.Must(err)
 
 			err = os.WriteFile(cfg.Crypto.RSA.Public, []byte(pub))
@@ -46,7 +47,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 		op = "rotated keys"
 	case flags.IsBoolSet(VerifyFlag):
 		fn = func(ctx context.Context) context.Context {
-			a, err := rsa.NewAlgo(cfg.Crypto.RSA)
+			a, err := rsa.NewCipher(rand, cfg.Crypto.RSA)
 			runtime.Must(err)
 
 			msg := "this is a test"

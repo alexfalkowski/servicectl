@@ -17,7 +17,7 @@ import (
 var RotateFlag = flags.Bool()
 
 // Start for token.
-func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
+func Start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, cfg *config.Config) {
 	if !flags.IsBoolSet(RotateFlag) {
 		return
 	}
