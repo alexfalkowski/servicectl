@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/alexfalkowski/go-service/crypto/aes"
+	"github.com/alexfalkowski/go-service/crypto/rand"
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
@@ -23,7 +24,7 @@ var (
 )
 
 // Start for AES.
-func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
+func Start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, gen *aes.Generator, cfg *config.Config) {
 	var (
 		fn runner.StartFn
 		op string
@@ -32,7 +33,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 	switch {
 	case flags.IsBoolSet(RotateFlag):
 		fn = func(ctx context.Context) context.Context {
-			k, err := aes.Generate()
+			k, err := gen.Generate()
 			runtime.Must(err)
 
 			err = os.WriteBase64File(cfg.Crypto.AES.Key, []byte(k))
@@ -43,7 +44,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, cfg *config.Config) {
 		op = "rotated key"
 	case flags.IsBoolSet(VerifyFlag):
 		fn = func(ctx context.Context) context.Context {
-			a, err := aes.NewAlgo(cfg.Crypto.AES)
+			a, err := aes.NewCipher(rand, cfg.Crypto.AES)
 			runtime.Must(err)
 
 			msg := "this is a test"

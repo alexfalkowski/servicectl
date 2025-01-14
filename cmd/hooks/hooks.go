@@ -27,7 +27,7 @@ var (
 )
 
 // Start for hooks.
-func Start(lc fx.Lifecycle, logger *zap.Logger, hook *hooks.Webhook, cfg *config.Config) {
+func Start(lc fx.Lifecycle, logger *zap.Logger, gen *h.Generator, hook *hooks.Webhook, cfg *config.Config) {
 	var (
 		fn runner.StartFn
 		op string
@@ -36,7 +36,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, hook *hooks.Webhook, cfg *config
 	switch {
 	case flags.IsBoolSet(RotateFlag):
 		fn = func(ctx context.Context) context.Context {
-			s, err := h.Generate()
+			s, err := gen.Generate()
 			runtime.Must(err)
 
 			err = os.WriteFile(cfg.Hooks.Secret, []byte(s))
