@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [v0.176.1](https://github.com/alexfalkowski/servicectl/releases/tag/v0.176.1) - 2025-01-18
+
+- [`2cb9378`](https://github.com/alexfalkowski/servicectl/commit/2cb93782797398e41b33225f2febb3922de5efa0) fix(docker): add space (#335)
+
 ## [v0.176.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.176.0) - 2025-01-18
 
 - [`7ae9e74`](https://github.com/alexfalkowski/servicectl/commit/7ae9e741a0ad662fcc8f03b0c9326350c9997a3d) feat(docker): create a statically linked binary (#334)
