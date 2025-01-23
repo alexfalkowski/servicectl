@@ -12,11 +12,20 @@ import (
 var VerifyFlag = flags.Bool()
 
 // Start for grpc.
+//
+//nolint:gocritic
 func Start(lc fx.Lifecycle, logger *zap.Logger, _ *http.Server) {
-	if !flags.IsBoolSet(VerifyFlag) {
-		return
+	var (
+		fn runner.StartFn
+		op string
+	)
+
+	switch {
+	case flags.IsBoolSet(VerifyFlag):
+		fn = runner.NoStart
+		op = "started"
 	}
 
-	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: runner.NoStart}
-	runner.Start("http", "started", opts)
+	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	runner.Start("http", op, opts)
 }

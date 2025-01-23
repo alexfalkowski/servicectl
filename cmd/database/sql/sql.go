@@ -25,18 +25,25 @@ type Params struct {
 }
 
 // Start for sql.
+//
+//nolint:gocritic
 func Start(lc fx.Lifecycle, logger *zap.Logger, db *mssqlx.DBs) {
-	if !flags.IsBoolSet(VerifyFlag) {
-		return
-	}
+	var (
+		fn runner.StartFn
+		op string
+	)
 
-	fn := func(ctx context.Context) context.Context {
-		err := errors.Join(db.Ping()...)
-		runtime.Must(err)
+	switch {
+	case flags.IsBoolSet(VerifyFlag):
+		fn = func(ctx context.Context) context.Context {
+			err := errors.Join(db.Ping()...)
+			runtime.Must(err)
 
-		return ctx
+			return ctx
+		}
+		op = "verified connection"
 	}
 
 	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
-	runner.Start("pg", "verified connection", opts)
+	runner.Start("pg", op, opts)
 }

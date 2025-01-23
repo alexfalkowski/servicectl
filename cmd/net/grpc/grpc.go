@@ -9,14 +9,25 @@ import (
 )
 
 // VerifyFlag defines wether we should verify or not.
+//
+
 var VerifyFlag = flags.Bool()
 
 // Start for grpc.
+//
+//nolint:gocritic
 func Start(lc fx.Lifecycle, logger *zap.Logger, _ *grpc.Server) {
-	if !flags.IsBoolSet(VerifyFlag) {
-		return
+	var (
+		fn runner.StartFn
+		op string
+	)
+
+	switch {
+	case flags.IsBoolSet(VerifyFlag):
+		fn = runner.NoStart
+		op = "started"
 	}
 
-	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: runner.NoStart}
-	runner.Start("grpc", "started", opts)
+	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	runner.Start("grpc", op, opts)
 }

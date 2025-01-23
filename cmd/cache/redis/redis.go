@@ -15,18 +15,25 @@ import (
 var VerifyFlag = flags.Bool()
 
 // Start for redis.
+//
+//nolint:gocritic
 func Start(lc fx.Lifecycle, logger *zap.Logger, client redis.Client) {
-	if !flags.IsBoolSet(VerifyFlag) {
-		return
-	}
+	var (
+		fn runner.StartFn
+		op string
+	)
 
-	fn := func(ctx context.Context) context.Context {
-		cmd := client.Ping(ctx)
-		runtime.Must(cmd.Err())
+	switch {
+	case flags.IsBoolSet(VerifyFlag):
+		fn = func(ctx context.Context) context.Context {
+			cmd := client.Ping(ctx)
+			runtime.Must(cmd.Err())
 
-		return ctx
+			return ctx
+		}
+		op = "verified connection"
 	}
 
 	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
-	runner.Start("redis", "verified connection", opts)
+	runner.Start("redis", op, opts)
 }
