@@ -17,21 +17,28 @@ import (
 var RotateFlag = flags.Bool()
 
 // Start for token.
+//
+//nolint:gocritic
 func Start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, cfg *config.Config) {
-	if !flags.IsBoolSet(RotateFlag) {
-		return
-	}
+	var (
+		fn runner.StartFn
+		op string
+	)
 
-	fn := func(ctx context.Context) context.Context {
-		k, err := rand.GenerateString(64)
-		runtime.Must(err)
+	switch {
+	case flags.IsBoolSet(RotateFlag):
+		fn = func(ctx context.Context) context.Context {
+			k, err := rand.GenerateString(64)
+			runtime.Must(err)
 
-		err = os.WriteBase64File(cfg.Token.Key, []byte(k))
-		runtime.Must(err)
+			err = os.WriteBase64File(cfg.Token.Key, []byte(k))
+			runtime.Must(err)
 
-		return ctx
+			return ctx
+		}
+		op = "rotated key"
 	}
 
 	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
-	runner.Start("token", "rotated key", opts)
+	runner.Start("token", op, opts)
 }
