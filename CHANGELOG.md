@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [v0.182.1](https://github.com/alexfalkowski/servicectl/releases/tag/v0.182.1) - 2025-01-23
+
+- [`7f805ee`](https://github.com/alexfalkowski/servicectl/commit/7f805ee883bc368ebdd681f80b8f64a61ee18c73) fix(cmd): fn is always set (#345)
+
 ## [v0.182.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.182.0) - 2025-01-23
 
 - [`6bebdb0`](https://github.com/alexfalkowski/servicectl/commit/6bebdb0faefaa8869d0d64c188d2ae5939bbf794) feat(cmd): allow better extensibility (#344)
