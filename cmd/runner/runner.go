@@ -25,10 +25,6 @@ type Options struct {
 
 // Start the cmd.
 func Start(name, operation string, opts *Options) {
-	if opts.Fn == nil {
-		return
-	}
-
 	cmd.Start(opts.Lifecycle, func(ctx context.Context) {
 		ctx = opts.Fn(ctx)
 		msg := fmt.Sprintf("%s: successfully %s", name, operation)
