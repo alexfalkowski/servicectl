@@ -38,7 +38,10 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, cfg *confi
 				err = os.WriteBase64File(cfg.Token.Secret, []byte(k))
 				runtime.Must(err)
 			case "token":
-				err := os.WriteFile(cfg.Token.Secret, []byte(token.Generate(name)))
+				k, err := token.Generate(name, rand)
+				runtime.Must(err)
+
+				err = os.WriteFile(cfg.Token.Secret, []byte(k))
 				runtime.Must(err)
 			}
 
