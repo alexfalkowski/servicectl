@@ -1,5 +1,4 @@
 Feature: Crypto
-
   The ability to rotate keys.
 
   Scenario: Successfully rotate AES key

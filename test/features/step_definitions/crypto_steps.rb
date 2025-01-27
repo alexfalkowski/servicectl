@@ -58,6 +58,7 @@ end
 
 Then('we should have a succesful rotation of aes keys') do
   expect(@status.exitstatus).to eq(0)
+  expect(File).to exist('secrets/aes-new')
 end
 
 Then('we should have a succesful verification of aes keys') do
@@ -66,6 +67,7 @@ end
 
 Then('we should have a succesful rotation of hmac keys') do
   expect(@status.exitstatus).to eq(0)
+  expect(File).to exist('secrets/hmac-new')
 end
 
 Then('we should have a succesful verification of hmac keys') do
@@ -74,6 +76,8 @@ end
 
 Then('we should have a succesful rotation of rsa keys') do
   expect(@status.exitstatus).to eq(0)
+  expect(File).to exist('secrets/rsa_public-new')
+  expect(File).to exist('secrets/rsa_private-new')
 end
 
 Then('we should have a succesful verification of rsa keys') do
@@ -82,6 +86,8 @@ end
 
 Then('we should have a succesful rotation of ed25519 keys') do
   expect(@status.exitstatus).to eq(0)
+  expect(File).to exist('secrets/ed25519_public-new')
+  expect(File).to exist('secrets/ed25519_private-new')
 end
 
 Then('we should have a succesful verification of ed25519 keys') do

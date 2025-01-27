@@ -20,4 +20,5 @@ end
 
 Then('we should have a succesful rotated the hook secret') do
   expect(@status.exitstatus).to eq(0)
+  expect(File).to exist('secrets/hooks-new')
 end

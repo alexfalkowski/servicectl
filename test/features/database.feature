@@ -1,5 +1,4 @@
 Feature: Cache
-
   The ability to verify database.
 
   Scenario: Successfully connect to pg
