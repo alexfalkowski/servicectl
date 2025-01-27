@@ -5,3 +5,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'nonnative'
 require 'servicectl'
+
+BeforeAll do
+  Dir.glob('secrets/*-new').each { |file| File.delete(file) }
+end

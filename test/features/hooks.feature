@@ -1,5 +1,4 @@
 Feature: Hooks
-
   The ability to verify hooks.
 
   Scenario: Successfully verify a hook

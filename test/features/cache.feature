@@ -1,5 +1,4 @@
 Feature: Cache
-
   The ability to verify cache.
 
   Scenario: Successfully connect to redis

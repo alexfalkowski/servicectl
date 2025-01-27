@@ -35,9 +35,6 @@ sql:
 telemetry:
   logger:
     level: info
-token:
-  kind: key
-  key: secrets/token
 transport:
   http:
     address: :11000

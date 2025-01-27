@@ -1,5 +1,4 @@
 Feature: Net
-
   The ability to verify net.
 
   Scenario: Successfully setup http

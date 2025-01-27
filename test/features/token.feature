@@ -1,8 +1,12 @@
 Feature: Token
+  The ability to rotate token secrets.
 
-  The ability to rotate keys.
+  Scenario Outline: Successfully rotate tokens
+    When we rotate token secret of kind "<kind>"
+    Then we should have a succesful rotation of the secret of kind "<kind>"
+    And I should see a log entry of "token: successfully rotated <kind>" in the file "reports/token.log"
 
-  Scenario: Successfully rotate token key
-    When we rotate the token key
-    Then we should have a succesful rotation of token key
-    And I should see a log entry of "token: successfully rotated key" in the file "reports/token.log"
+    Examples:
+      | kind  |
+      | key   |
+      | token |
