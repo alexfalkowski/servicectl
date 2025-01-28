@@ -3,9 +3,11 @@ version: 2.1
 jobs:
   build-client:
     docker:
-      - image: alexfalkowski/go:1.7
-      - image: redis:7.2-alpine
-      - image: postgres:16-bullseye
+      - image: alexfalkowski/go:1.8
+      - image: bitnami/redis:7.4
+        environment:
+          REDIS_PASSWORD: test
+      - image: postgres:17-bullseye
         environment:
           POSTGRES_DB: test
           POSTGRES_USER: test
@@ -59,7 +61,7 @@ jobs:
     resource_class: large
   build-docker:
     docker:
-      - image: alexfalkowski/go:1.7
+      - image: alexfalkowski/go:1.8
     working_directory: ~/servicectl
     steps:
       - checkout
@@ -82,7 +84,7 @@ jobs:
     resource_class: large
   push-docker:
     docker:
-      - image: alexfalkowski/go:1.7
+      - image: alexfalkowski/go:1.8
     working_directory: ~/servicectl
     steps:
       - checkout
