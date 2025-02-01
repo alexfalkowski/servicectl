@@ -1,10 +1,7 @@
 environment: development
 cache:
-  redis:
-    marshaller: proto
-    compressor: snappy
-    addresses:
-      server: localhost:6379
+  kind: redis
+  options:
     url: secrets/redis
 crypto:
   aes:

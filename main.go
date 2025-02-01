@@ -6,7 +6,6 @@ import (
 	sc "github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/servicectl/cmd"
-	"github.com/alexfalkowski/servicectl/cmd/cache/redis"
 	"github.com/alexfalkowski/servicectl/cmd/crypto/aes"
 	"github.com/alexfalkowski/servicectl/cmd/crypto/ed25519"
 	"github.com/alexfalkowski/servicectl/cmd/crypto/hmac"
@@ -30,17 +29,12 @@ func command() *sc.Command {
 	c := sc.New(cmd.Version)
 	c.RegisterInput(c.Root(), "")
 
-	fns := []fn{cache, crypto, database, hooks, net, tkn}
+	fns := []fn{crypto, database, hooks, net, tkn}
 	for _, f := range fns {
 		f(c)
 	}
 
 	return c
-}
-
-func cache(c *sc.Command) {
-	r := c.AddClient("redis", "Redis cache.", cmd.Module, redis.Module)
-	flags.BoolVar(r, redis.VerifyFlag, "verify", "v", false, "verify connection")
 }
 
 func crypto(c *sc.Command) {
