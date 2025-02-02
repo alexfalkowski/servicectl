@@ -5,9 +5,9 @@ go 1.23.3
 toolchain go1.23.5
 
 require (
-	github.com/alexfalkowski/go-service v1.402.0
+	github.com/alexfalkowski/go-service v1.403.0
 	github.com/linxGnu/mssqlx v1.1.8
-	github.com/standard-webhooks/standard-webhooks/libraries v0.0.0-20250103171228-b75b9ab8ea1e
+	github.com/standard-webhooks/standard-webhooks/libraries v0.0.0-20250130150621-c1b941e3a055
 	go.uber.org/fx v1.23.0
 	go.uber.org/zap v1.27.0
 )
@@ -85,7 +85,7 @@ require (
 	github.com/segmentio/ksuid v1.0.4 // indirect
 	github.com/sethvargo/go-limiter v1.0.0 // indirect
 	github.com/sethvargo/go-retry v0.3.0 // indirect
-	github.com/shirou/gopsutil/v4 v4.24.12 // indirect
+	github.com/shirou/gopsutil/v4 v4.25.1 // indirect
 	github.com/sony/gobreaker v1.0.0 // indirect
 	github.com/spf13/cast v1.7.1 // indirect
 	github.com/spf13/cobra v1.8.1 // indirect
