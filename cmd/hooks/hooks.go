@@ -19,10 +19,10 @@ import (
 )
 
 var (
-	// RotateFlag defines wether we should rotate the secret or not.
+	// RotateFlag defines whether we should rotate the secret or not.
 	RotateFlag = flags.Bool()
 
-	// VerifyFlag defines wether we should verify the hook or not.
+	// VerifyFlag defines whether we should verify the hook or not.
 	VerifyFlag = flags.Bool()
 )
 
@@ -60,7 +60,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, gen *h.Generator, hook *hooks.We
 			err = hook.Verify(p, h)
 			runtime.Must(err)
 
-			return meta.WithAttribute(ctx, "testMsg", meta.String(p))
+			return meta.WithAttribute(ctx, "testMsg", meta.String(string(p)))
 		}
 		op = "verified"
 	}
