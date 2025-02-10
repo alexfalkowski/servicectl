@@ -5,7 +5,7 @@ go 1.23.3
 toolchain go1.23.6
 
 require (
-	github.com/alexfalkowski/go-service v1.422.0
+	github.com/alexfalkowski/go-service v1.423.0
 	github.com/linxGnu/mssqlx v1.1.8
 	github.com/standard-webhooks/standard-webhooks/libraries v0.0.0-20250130150621-c1b941e3a055
 	go.uber.org/fx v1.23.0
