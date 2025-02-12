@@ -3,7 +3,7 @@ package http
 import (
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/transport/http"
-	"github.com/alexfalkowski/servicectl/cmd/runner"
+	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 )

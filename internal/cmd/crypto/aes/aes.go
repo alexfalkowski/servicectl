@@ -1,0 +1,64 @@
+package aes
+
+import (
+	"context"
+
+	"github.com/alexfalkowski/go-service/crypto/aes"
+	"github.com/alexfalkowski/go-service/crypto/rand"
+	"github.com/alexfalkowski/go-service/flags"
+	"github.com/alexfalkowski/go-service/meta"
+	"github.com/alexfalkowski/go-service/runtime"
+	"github.com/alexfalkowski/servicectl/internal/cmd/os"
+	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
+	"github.com/alexfalkowski/servicectl/internal/config"
+	"go.uber.org/fx"
+	"go.uber.org/zap"
+)
+
+var (
+	// RotateFlag defines wether we should rotate the key or not.
+	RotateFlag = flags.Bool()
+
+	// VerifyFlag defines wether we should verify the key or not.
+	VerifyFlag = flags.Bool()
+)
+
+// Start for AES.
+func Start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, gen *aes.Generator, cfg *config.Config) {
+	var (
+		fn runner.StartFn
+		op string
+	)
+
+	switch {
+	case flags.IsBoolSet(RotateFlag):
+		fn = func(ctx context.Context) context.Context {
+			k, err := gen.Generate()
+			runtime.Must(err)
+
+			err = os.WriteBase64File(cfg.Crypto.AES.Key, []byte(k))
+			runtime.Must(err)
+
+			return ctx
+		}
+		op = "rotated key"
+	case flags.IsBoolSet(VerifyFlag):
+		fn = func(ctx context.Context) context.Context {
+			a, err := aes.NewCipher(rand, cfg.Crypto.AES)
+			runtime.Must(err)
+
+			msg := "this is a test"
+			enc, err := a.Encrypt(msg)
+			runtime.Must(err)
+
+			_, err = a.Decrypt(enc)
+			runtime.Must(err)
+
+			return meta.WithAttribute(ctx, "testMsg", meta.String(msg))
+		}
+		op = "verified key"
+	}
+
+	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	runner.Start("aes", op, opts)
+}

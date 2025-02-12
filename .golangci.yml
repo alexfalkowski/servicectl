@@ -7,7 +7,6 @@ linters-settings:
 linters:
   enable-all: true
   disable:
-    - exportloopref
     - tagalign
     - bodyclose
     - depguard
@@ -16,3 +15,4 @@ linters:
     - paralleltest
     - varnamelen
     - wrapcheck
+    - tenv

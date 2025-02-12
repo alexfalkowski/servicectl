@@ -4,7 +4,7 @@ import (
 	"github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/module"
 	"github.com/alexfalkowski/go-service/telemetry"
-	"github.com/alexfalkowski/servicectl/config"
+	"github.com/alexfalkowski/servicectl/internal/config"
 	"go.uber.org/fx"
 )
 

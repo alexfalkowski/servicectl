@@ -1,16 +1,15 @@
-package rsa
+package ed25519
 
 import (
 	"context"
 
-	"github.com/alexfalkowski/go-service/crypto/rand"
-	"github.com/alexfalkowski/go-service/crypto/rsa"
+	"github.com/alexfalkowski/go-service/crypto/ed25519"
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
-	"github.com/alexfalkowski/servicectl/cmd/os"
-	"github.com/alexfalkowski/servicectl/cmd/runner"
-	"github.com/alexfalkowski/servicectl/config"
+	"github.com/alexfalkowski/servicectl/internal/cmd/os"
+	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
+	"github.com/alexfalkowski/servicectl/internal/config"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 )
@@ -24,7 +23,7 @@ var (
 )
 
 // Start for AES.
-func Start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, gen *rsa.Generator, cfg *config.Config) {
+func Start(lc fx.Lifecycle, logger *zap.Logger, gen *ed25519.Generator, cfg *config.Config) {
 	var (
 		fn runner.StartFn
 		op string
@@ -36,10 +35,10 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, gen *rsa.G
 			pub, pri, err := gen.Generate()
 			runtime.Must(err)
 
-			err = os.WriteFile(cfg.Crypto.RSA.Public, []byte(pub))
+			err = os.WriteFile(cfg.Crypto.Ed25519.Public, []byte(pub))
 			runtime.Must(err)
 
-			err = os.WriteFile(cfg.Crypto.RSA.Private, []byte(pri))
+			err = os.WriteFile(cfg.Crypto.Ed25519.Private, []byte(pri))
 			runtime.Must(err)
 
 			return ctx
@@ -47,14 +46,15 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, gen *rsa.G
 		op = "rotated keys"
 	case flags.IsBoolSet(VerifyFlag):
 		fn = func(ctx context.Context) context.Context {
-			a, err := rsa.NewCipher(rand, cfg.Crypto.RSA)
+			a, err := ed25519.NewSigner(cfg.Crypto.Ed25519)
 			runtime.Must(err)
 
 			msg := "this is a test"
-			enc, err := a.Encrypt(msg)
+
+			enc, err := a.Sign(msg)
 			runtime.Must(err)
 
-			_, err = a.Decrypt(enc)
+			err = a.Verify(enc, msg)
 			runtime.Must(err)
 
 			return meta.WithAttribute(ctx, "testMsg", meta.String(msg))
@@ -63,5 +63,5 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, gen *rsa.G
 	}
 
 	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
-	runner.Start("rsa", op, opts)
+	runner.Start("ed25519", op, opts)
 }
