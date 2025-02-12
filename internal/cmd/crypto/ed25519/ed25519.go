@@ -3,10 +3,12 @@ package ed25519
 import (
 	"context"
 
+	sc "github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/crypto/ed25519"
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
+	"github.com/alexfalkowski/servicectl/internal/cmd"
 	"github.com/alexfalkowski/servicectl/internal/cmd/os"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/alexfalkowski/servicectl/internal/config"
@@ -14,23 +16,28 @@ import (
 	"go.uber.org/zap"
 )
 
-var (
-	// RotateFlag defines wether we should rotate the keys or not.
-	RotateFlag = flags.Bool()
+// Register for ed25519.
+func Register(command *sc.Command) {
+	client := command.AddClient("ed25519", "Ed25519 crypto.", cmd.Module, fx.Invoke(start))
 
-	// VerifyFlag defines wether we should verify the keys or not.
-	VerifyFlag = flags.Bool()
+	flags.BoolVar(client, rotate, "rotate", "r", false, "rotate key")
+	flags.BoolVar(client, verify, "verify", "v", false, "verify key")
+}
+
+var (
+	rotate = flags.Bool()
+
+	verify = flags.Bool()
 )
 
-// Start for AES.
-func Start(lc fx.Lifecycle, logger *zap.Logger, gen *ed25519.Generator, cfg *config.Config) {
+func start(lc fx.Lifecycle, logger *zap.Logger, gen *ed25519.Generator, cfg *config.Config) {
 	var (
 		fn runner.StartFn
 		op string
 	)
 
 	switch {
-	case flags.IsBoolSet(RotateFlag):
+	case flags.IsBoolSet(rotate):
 		fn = func(ctx context.Context) context.Context {
 			pub, pri, err := gen.Generate()
 			runtime.Must(err)
@@ -44,7 +51,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, gen *ed25519.Generator, cfg *con
 			return ctx
 		}
 		op = "rotated keys"
-	case flags.IsBoolSet(VerifyFlag):
+	case flags.IsBoolSet(verify):
 		fn = func(ctx context.Context) context.Context {
 			a, err := ed25519.NewSigner(cfg.Crypto.Ed25519)
 			runtime.Must(err)

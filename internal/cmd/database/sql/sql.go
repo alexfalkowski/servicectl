@@ -4,37 +4,35 @@ import (
 	"context"
 	"errors"
 
+	sc "github.com/alexfalkowski/go-service/cmd"
+	"github.com/alexfalkowski/go-service/database/sql/pg"
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/runtime"
+	"github.com/alexfalkowski/servicectl/internal/cmd"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/linxGnu/mssqlx"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 )
 
-// VerifyFlag defines wether we should verify the connection or not.
-var VerifyFlag = flags.Bool()
+// Register for sql.
+func Register(command *sc.Command) {
+	client := command.AddClient("pg", "Postgres DB.", cmd.Module, pg.Module, fx.Invoke(start))
 
-// Params for sql.
-type Params struct {
-	fx.In
-
-	Lifecycle fx.Lifecycle
-	Logger    *zap.Logger
-	DB        *mssqlx.DBs
+	flags.BoolVar(client, verify, "verify", "v", false, "verify connection")
 }
 
-// Start for sql.
-//
+var verify = flags.Bool()
+
 //nolint:gocritic
-func Start(lc fx.Lifecycle, logger *zap.Logger, db *mssqlx.DBs) {
+func start(lc fx.Lifecycle, logger *zap.Logger, db *mssqlx.DBs) {
 	var (
 		fn runner.StartFn
 		op string
 	)
 
 	switch {
-	case flags.IsBoolSet(VerifyFlag):
+	case flags.IsBoolSet(verify):
 		fn = func(ctx context.Context) context.Context {
 			err := errors.Join(db.Ping()...)
 			runtime.Must(err)
