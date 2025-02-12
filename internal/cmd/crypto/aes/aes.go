@@ -3,11 +3,14 @@ package aes
 import (
 	"context"
 
+	sc "github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/crypto/aes"
 	"github.com/alexfalkowski/go-service/crypto/rand"
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
+	"github.com/alexfalkowski/go-service/token"
+	"github.com/alexfalkowski/servicectl/internal/cmd"
 	"github.com/alexfalkowski/servicectl/internal/cmd/os"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/alexfalkowski/servicectl/internal/config"
@@ -15,23 +18,28 @@ import (
 	"go.uber.org/zap"
 )
 
-var (
-	// RotateFlag defines wether we should rotate the key or not.
-	RotateFlag = flags.Bool()
+// Register for aes.
+func Register(command *sc.Command) {
+	client := command.AddClient("aes", "AES crypto.", cmd.Module, token.Module, fx.Invoke(start))
 
-	// VerifyFlag defines wether we should verify the key or not.
-	VerifyFlag = flags.Bool()
+	flags.BoolVar(client, rotate, "rotate", "r", false, "rotate key")
+	flags.BoolVar(client, verify, "verify", "v", false, "verify key")
+}
+
+var (
+	rotate = flags.Bool()
+
+	verify = flags.Bool()
 )
 
-// Start for AES.
-func Start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, gen *aes.Generator, cfg *config.Config) {
+func start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, gen *aes.Generator, cfg *config.Config) {
 	var (
 		fn runner.StartFn
 		op string
 	)
 
 	switch {
-	case flags.IsBoolSet(RotateFlag):
+	case flags.IsBoolSet(rotate):
 		fn = func(ctx context.Context) context.Context {
 			k, err := gen.Generate()
 			runtime.Must(err)
@@ -42,7 +50,7 @@ func Start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, gen *aes.G
 			return ctx
 		}
 		op = "rotated key"
-	case flags.IsBoolSet(VerifyFlag):
+	case flags.IsBoolSet(verify):
 		fn = func(ctx context.Context) context.Context {
 			a, err := aes.NewCipher(rand, cfg.Crypto.AES)
 			runtime.Must(err)

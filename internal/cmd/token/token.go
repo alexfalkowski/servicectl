@@ -3,11 +3,13 @@ package token
 import (
 	"context"
 
+	sc "github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/crypto/rand"
 	"github.com/alexfalkowski/go-service/env"
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/go-service/token"
+	"github.com/alexfalkowski/servicectl/internal/cmd"
 	"github.com/alexfalkowski/servicectl/internal/cmd/os"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/alexfalkowski/servicectl/internal/config"
@@ -15,20 +17,24 @@ import (
 	"go.uber.org/zap"
 )
 
-// RotateFlag defines wether we should rotate the key or not.
-var RotateFlag = flags.Bool()
+// Register for token.
+func Register(command *sc.Command) {
+	client := command.AddClient("token", "Security tokens.", cmd.Module, token.Module, fx.Invoke(start))
 
-// Start for token.
-//
+	flags.BoolVar(client, rotate, "rotate", "r", false, "rotate secret")
+}
+
+var rotate = flags.Bool()
+
 //nolint:gocritic
-func Start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, cfg *config.Config, name env.Name) {
+func start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, cfg *config.Config, name env.Name) {
 	var (
 		fn runner.StartFn
 		op string
 	)
 
 	switch {
-	case flags.IsBoolSet(RotateFlag):
+	case flags.IsBoolSet(rotate):
 		fn = func(ctx context.Context) context.Context {
 			switch cfg.Token.Kind {
 			case "key":
