@@ -7,9 +7,9 @@ import (
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
-	"github.com/alexfalkowski/servicectl/cmd/os"
-	"github.com/alexfalkowski/servicectl/cmd/runner"
-	"github.com/alexfalkowski/servicectl/config"
+	"github.com/alexfalkowski/servicectl/internal/cmd/os"
+	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
+	"github.com/alexfalkowski/servicectl/internal/config"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 )

@@ -3,16 +3,16 @@ package main
 import (
 	sc "github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/flags"
-	"github.com/alexfalkowski/servicectl/cmd"
-	"github.com/alexfalkowski/servicectl/cmd/crypto/aes"
-	"github.com/alexfalkowski/servicectl/cmd/crypto/ed25519"
-	"github.com/alexfalkowski/servicectl/cmd/crypto/hmac"
-	"github.com/alexfalkowski/servicectl/cmd/crypto/rsa"
-	"github.com/alexfalkowski/servicectl/cmd/database/sql"
-	ch "github.com/alexfalkowski/servicectl/cmd/hooks"
-	"github.com/alexfalkowski/servicectl/cmd/net/grpc"
-	"github.com/alexfalkowski/servicectl/cmd/net/http"
-	"github.com/alexfalkowski/servicectl/cmd/token"
+	"github.com/alexfalkowski/servicectl/internal/cmd"
+	"github.com/alexfalkowski/servicectl/internal/cmd/crypto/aes"
+	"github.com/alexfalkowski/servicectl/internal/cmd/crypto/ed25519"
+	"github.com/alexfalkowski/servicectl/internal/cmd/crypto/hmac"
+	"github.com/alexfalkowski/servicectl/internal/cmd/crypto/rsa"
+	"github.com/alexfalkowski/servicectl/internal/cmd/database/sql"
+	"github.com/alexfalkowski/servicectl/internal/cmd/hooks"
+	"github.com/alexfalkowski/servicectl/internal/cmd/net/grpc"
+	"github.com/alexfalkowski/servicectl/internal/cmd/net/http"
+	"github.com/alexfalkowski/servicectl/internal/cmd/token"
 )
 
 func main() {
@@ -25,7 +25,7 @@ func command() *sc.Command {
 	c := sc.New(cmd.Version)
 	c.RegisterInput(c.Root(), "")
 
-	fns := []fn{crypto, database, hooks, net, tkn}
+	fns := []fn{cryptoClient, databaseClient, hooksClient, netClient, tokenClient}
 	for _, f := range fns {
 		f(c)
 	}
@@ -33,7 +33,7 @@ func command() *sc.Command {
 	return c
 }
 
-func crypto(c *sc.Command) {
+func cryptoClient(c *sc.Command) {
 	ac := c.AddClient("aes", "AES crypto.", cmd.Module, aes.Module)
 	flags.BoolVar(ac, aes.RotateFlag, "rotate", "r", false, "rotate key")
 	flags.BoolVar(ac, aes.VerifyFlag, "verify", "v", false, "verify key")
@@ -51,18 +51,18 @@ func crypto(c *sc.Command) {
 	flags.BoolVar(ae, ed25519.VerifyFlag, "verify", "v", false, "verify keys")
 }
 
-func database(c *sc.Command) {
+func databaseClient(c *sc.Command) {
 	p := c.AddClient("pg", "Postgres DB.", cmd.Module, sql.Module)
 	flags.BoolVar(p, sql.VerifyFlag, "verify", "v", false, "verify connection")
 }
 
-func hooks(c *sc.Command) {
-	h := c.AddClient("hooks", "Webhooks.", cmd.Module, ch.Module)
-	flags.BoolVar(h, ch.RotateFlag, "rotate", "r", false, "rotate secret")
-	flags.BoolVar(h, ch.VerifyFlag, "verify", "v", false, "verify webhook")
+func hooksClient(c *sc.Command) {
+	h := c.AddClient("hooks", "Webhooks.", cmd.Module, hooks.Module)
+	flags.BoolVar(h, hooks.RotateFlag, "rotate", "r", false, "rotate secret")
+	flags.BoolVar(h, hooks.VerifyFlag, "verify", "v", false, "verify webhook")
 }
 
-func net(c *sc.Command) {
+func netClient(c *sc.Command) {
 	h := c.AddClient("http", "HTTP Server.", cmd.Module, http.Module)
 	flags.BoolVar(h, http.VerifyFlag, "verify", "v", false, "verify server")
 
@@ -70,7 +70,7 @@ func net(c *sc.Command) {
 	flags.BoolVar(g, grpc.VerifyFlag, "verify", "v", false, "verify server")
 }
 
-func tkn(c *sc.Command) {
+func tokenClient(c *sc.Command) {
 	t := c.AddClient("token", "Security tokens.", cmd.Module, token.Module)
 	flags.BoolVar(t, token.RotateFlag, "rotate", "r", false, "rotate secret")
 }

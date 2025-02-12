@@ -6,7 +6,7 @@ import (
 
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/runtime"
-	"github.com/alexfalkowski/servicectl/cmd/runner"
+	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/linxGnu/mssqlx"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
