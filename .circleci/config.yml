@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build-client:
     docker:
-      - image: alexfalkowski/go:1.12
+      - image: alexfalkowski/go:1.14
       - image: bitnami/redis:7.4
         environment:
           REDIS_PASSWORD: test
@@ -61,7 +61,7 @@ jobs:
     resource_class: large
   build-docker:
     docker:
-      - image: alexfalkowski/go:1.12
+      - image: alexfalkowski/go:1.14
     working_directory: ~/servicectl
     steps:
       - checkout
@@ -74,7 +74,7 @@ jobs:
     resource_class: large
   release:
     docker:
-      - image: alexfalkowski/release:3.7
+      - image: alexfalkowski/release:3.8
     working_directory: ~/servicectl
     steps:
       - checkout
@@ -84,7 +84,7 @@ jobs:
     resource_class: large
   push-docker:
     docker:
-      - image: alexfalkowski/go:1.12
+      - image: alexfalkowski/go:1.14
     working_directory: ~/servicectl
     steps:
       - checkout
