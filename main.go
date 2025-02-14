@@ -2,7 +2,7 @@ package main
 
 import (
 	sc "github.com/alexfalkowski/go-service/cmd"
-	"github.com/alexfalkowski/servicectl/internal/cmd"
+	"github.com/alexfalkowski/go-service/env"
 	"github.com/alexfalkowski/servicectl/internal/cmd/crypto/aes"
 	"github.com/alexfalkowski/servicectl/internal/cmd/crypto/ed25519"
 	"github.com/alexfalkowski/servicectl/internal/cmd/crypto/hmac"
@@ -19,7 +19,7 @@ func main() {
 }
 
 func command() *sc.Command {
-	command := sc.New(cmd.Version)
+	command := sc.New(env.NewVersion().String())
 	command.RegisterInput(command.Root(), "")
 
 	aes.Register(command)
