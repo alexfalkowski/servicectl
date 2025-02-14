@@ -12,5 +12,4 @@ import (
 var Module = fx.Options(
 	module.Module, telemetry.Module,
 	config.Module, cmd.Module,
-	fx.Provide(NewVersion),
 )
