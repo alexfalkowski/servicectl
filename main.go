@@ -1,8 +1,8 @@
 package main
 
 import (
-	sc "github.com/alexfalkowski/go-service/cmd"
-	"github.com/alexfalkowski/servicectl/internal/cmd"
+	"github.com/alexfalkowski/go-service/cmd"
+	"github.com/alexfalkowski/go-service/env"
 	"github.com/alexfalkowski/servicectl/internal/cmd/crypto/aes"
 	"github.com/alexfalkowski/servicectl/internal/cmd/crypto/ed25519"
 	"github.com/alexfalkowski/servicectl/internal/cmd/crypto/hmac"
@@ -18,8 +18,8 @@ func main() {
 	command().ExitOnError()
 }
 
-func command() *sc.Command {
-	command := sc.New(cmd.Version)
+func command() *cmd.Command {
+	command := cmd.New(env.NewVersion().String())
 	command.RegisterInput(command.Root(), "")
 
 	aes.Register(command)
