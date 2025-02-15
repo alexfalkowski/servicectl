@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [v0.226.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.226.0) - 2025-02-15
+
+- [`1a6b944`](https://github.com/alexfalkowski/servicectl/commit/1a6b9449a23fcaca30248b96938a62d00cd67f7f) feat(deps): update github.com/alexfalkowski/go-service to v1.434.0 (#413)
+- [`944978e`](https://github.com/alexfalkowski/servicectl/commit/944978e399465414a11155d894957376dd43a9a4) build(deps): bump bin from `4a58c21` to `e8b23ef` (#412)
+- [`eca95de`](https://github.com/alexfalkowski/servicectl/commit/eca95def19acf3fc83b3a0ae43142afaddbf3ecc) test(deps): bump rubocop from 1.71.2 to 1.72.0 in /test (#411)
+- [`453fac8`](https://github.com/alexfalkowski/servicectl/commit/453fac8f64b799efe3f7822450850fbe69ea2ccb) test(deps): bump ruby-lsp from 0.23.10 to 0.23.11 in /test (#410)
+
 ## [v0.225.0](https://github.com/alexfalkowski/servicectl/releases/tag/v0.225.0) - 2025-02-14
 
 - [`1b5ab76`](https://github.com/alexfalkowski/servicectl/commit/1b5ab7651374819dfe86d801109d275849acf309) feat(deps): upgraded github.com/alexfalkowski/go-service to v1.433.0 (#409)
