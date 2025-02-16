@@ -7,6 +7,7 @@ import (
 	"github.com/alexfalkowski/go-service/transport/http"
 	"github.com/alexfalkowski/go-service/transport/meta"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
+	cf "github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
@@ -16,27 +17,37 @@ import (
 func Register(command *sc.Command) {
 	flags := flags.NewFlagSet("http")
 
-	command.RegisterInput(flags, "")
-	verify = flags.BoolP("verify", "v", false, "verify server")
+	flags.AddInput("")
+	flags.BoolP("verify", "v", false, "verify server")
 
-	command.AddClient("http", "HTTP Server.", flags, cmd.Module, limiter.Module, meta.Module, http.Module, fx.Invoke(start))
+	command.AddClient("http", "HTTP Server.", flags, cmd.Module, limiter.Module, meta.Module, http.Module, fx.Invoke(Start))
 }
 
-var verify = flags.Bool()
+// StartParams for grpc.
+type StartParams struct {
+	fx.In
 
+	Set       *flags.FlagSet
+	Lifecycle fx.Lifecycle
+	Logger    *zap.Logger
+	Server    *http.Server
+}
+
+// Start for http.
+//
 //nolint:gocritic
-func start(lc fx.Lifecycle, logger *zap.Logger, _ *http.Server) {
+func Start(params StartParams) {
 	var (
 		fn runner.StartFn
 		op string
 	)
 
 	switch {
-	case flags.IsBoolSet(verify):
+	case cf.IsSet(params.Set, "verify"):
 		fn = runner.NoStart
 		op = "started"
 	}
 
-	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	opts := &runner.Options{Lifecycle: params.Lifecycle, Logger: params.Logger, Fn: fn}
 	runner.Start("http", op, opts)
 }

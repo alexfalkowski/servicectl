@@ -9,6 +9,7 @@ import (
 	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
+	cf "github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/linxGnu/mssqlx"
 	"go.uber.org/fx"
@@ -19,25 +20,35 @@ import (
 func Register(command *sc.Command) {
 	flags := flags.NewFlagSet("pg")
 
-	command.RegisterInput(flags, "")
-	verify = flags.BoolP("verify", "v", false, "verify connection")
+	flags.AddInput("")
+	flags.BoolP("verify", "v", false, "verify connection")
 
-	command.AddClient("pg", "Postgres DB.", flags, cmd.Module, pg.Module, fx.Invoke(start))
+	command.AddClient("pg", "Postgres DB.", flags, cmd.Module, pg.Module, fx.Invoke(Start))
 }
 
-var verify = flags.Bool()
+// StartParams for sql.
+type StartParams struct {
+	fx.In
 
+	Set       *flags.FlagSet
+	Lifecycle fx.Lifecycle
+	Logger    *zap.Logger
+	DB        *mssqlx.DBs
+}
+
+// Start
+//
 //nolint:gocritic
-func start(lc fx.Lifecycle, logger *zap.Logger, db *mssqlx.DBs) {
+func Start(params StartParams) {
 	var (
 		fn runner.StartFn
 		op string
 	)
 
 	switch {
-	case flags.IsBoolSet(verify):
+	case cf.IsSet(params.Set, "verify"):
 		fn = func(ctx context.Context) context.Context {
-			err := errors.Join(db.Ping()...)
+			err := errors.Join(params.DB.Ping()...)
 			runtime.Must(err)
 
 			return ctx
@@ -45,6 +56,6 @@ func start(lc fx.Lifecycle, logger *zap.Logger, db *mssqlx.DBs) {
 		op = "verified connection"
 	}
 
-	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	opts := &runner.Options{Lifecycle: params.Lifecycle, Logger: params.Logger, Fn: fn}
 	runner.Start("pg", op, opts)
 }

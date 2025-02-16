@@ -12,6 +12,7 @@ import (
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
+	cf "github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/os"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/alexfalkowski/servicectl/internal/config"
@@ -24,41 +25,49 @@ import (
 func Register(command *sc.Command) {
 	flags := flags.NewFlagSet("hooks")
 
-	command.RegisterInput(flags, "")
-	rotate = flags.BoolP("rotate", "r", false, "rotate secret")
-	verify = flags.BoolP("verify", "v", false, "verify webhook")
+	flags.AddInput("")
+	flags.BoolP("rotate", "r", false, "rotate secret")
+	flags.BoolP("verify", "v", false, "verify webhook")
 
-	command.AddClient("hooks", "Webhooks.", flags, cmd.Module, h.Module, fx.Invoke(start))
+	command.AddClient("hooks", "Webhooks.", flags, cmd.Module, h.Module, fx.Invoke(Start))
 }
 
-var (
-	rotate = flags.Bool()
-	verify = flags.Bool()
-)
+// StartParams for hooks.
+type StartParams struct {
+	fx.In
 
-func start(lc fx.Lifecycle, logger *zap.Logger, gen *h.Generator, hook *hooks.Webhook, cfg *config.Config) {
+	Set       *flags.FlagSet
+	Lifecycle fx.Lifecycle
+	Logger    *zap.Logger
+	Generator *h.Generator
+	Hook      *hooks.Webhook
+	Config    *config.Config
+}
+
+// Start for hooks.
+func Start(params StartParams) {
 	var (
 		fn runner.StartFn
 		op string
 	)
 
 	switch {
-	case flags.IsBoolSet(rotate):
+	case cf.IsSet(params.Set, "rotate"):
 		fn = func(ctx context.Context) context.Context {
-			s, err := gen.Generate()
+			s, err := params.Generator.Generate()
 			runtime.Must(err)
 
-			err = os.WriteFile(cfg.Hooks.Secret, []byte(s))
+			err = os.WriteFile(params.Config.Hooks.Secret, []byte(s))
 			runtime.Must(err)
 
 			return ctx
 		}
 		op = "rotated secret"
-	case flags.IsBoolSet(verify):
+	case cf.IsSet(params.Set, "verify"):
 		fn = func(ctx context.Context) context.Context {
 			id, ts, p := "test", time.Now(), []byte("test")
 
-			sig, err := hook.Sign(id, ts, p)
+			sig, err := params.Hook.Sign(id, ts, p)
 			runtime.Must(err)
 
 			h := http.Header{}
@@ -66,7 +75,7 @@ func start(lc fx.Lifecycle, logger *zap.Logger, gen *h.Generator, hook *hooks.We
 			h.Add(hooks.HeaderWebhookSignature, sig)
 			h.Add(hooks.HeaderWebhookTimestamp, strconv.FormatInt(ts.Unix(), 10))
 
-			err = hook.Verify(p, h)
+			err = params.Hook.Verify(p, h)
 			runtime.Must(err)
 
 			return meta.WithAttribute(ctx, "testMsg", meta.String(string(p)))
@@ -74,6 +83,6 @@ func start(lc fx.Lifecycle, logger *zap.Logger, gen *h.Generator, hook *hooks.We
 		op = "verified"
 	}
 
-	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	opts := &runner.Options{Lifecycle: params.Lifecycle, Logger: params.Logger, Fn: fn}
 	runner.Start("hooks", op, opts)
 }

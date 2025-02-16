@@ -10,6 +10,7 @@ import (
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
+	cf "github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/os"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/alexfalkowski/servicectl/internal/config"
@@ -21,42 +22,50 @@ import (
 func Register(command *sc.Command) {
 	flags := flags.NewFlagSet("rsa")
 
-	command.RegisterInput(flags, "")
-	rotate = flags.BoolP("rotate", "r", false, "rotate key")
-	verify = flags.BoolP("verify", "v", false, "verify key")
+	flags.AddInput("")
+	flags.BoolP("rotate", "r", false, "rotate key")
+	flags.BoolP("verify", "v", false, "verify key")
 
-	command.AddClient("rsa", "RSA crypto.", flags, cmd.Module, fx.Invoke(start))
+	command.AddClient("rsa", "RSA crypto.", flags, cmd.Module, fx.Invoke(Start))
 }
 
-var (
-	rotate = flags.Bool()
-	verify = flags.Bool()
-)
+// StartParams for rsa.
+type StartParams struct {
+	fx.In
 
-func start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, gen *rsa.Generator, cfg *config.Config) {
+	Set       *flags.FlagSet
+	Lifecycle fx.Lifecycle
+	Logger    *zap.Logger
+	Random    *rand.Generator
+	Generator *rsa.Generator
+	Config    *config.Config
+}
+
+// Start for rsa.
+func Start(params StartParams) {
 	var (
 		fn runner.StartFn
 		op string
 	)
 
 	switch {
-	case flags.IsBoolSet(rotate):
+	case cf.IsSet(params.Set, "rotate"):
 		fn = func(ctx context.Context) context.Context {
-			pub, pri, err := gen.Generate()
+			pub, pri, err := params.Generator.Generate()
 			runtime.Must(err)
 
-			err = os.WriteFile(cfg.Crypto.RSA.Public, []byte(pub))
+			err = os.WriteFile(params.Config.Crypto.RSA.Public, []byte(pub))
 			runtime.Must(err)
 
-			err = os.WriteFile(cfg.Crypto.RSA.Private, []byte(pri))
+			err = os.WriteFile(params.Config.Crypto.RSA.Private, []byte(pri))
 			runtime.Must(err)
 
 			return ctx
 		}
 		op = "rotated keys"
-	case flags.IsBoolSet(verify):
+	case cf.IsSet(params.Set, "verify"):
 		fn = func(ctx context.Context) context.Context {
-			a, err := rsa.NewCipher(rand, cfg.Crypto.RSA)
+			a, err := rsa.NewCipher(params.Random, params.Config.Crypto.RSA)
 			runtime.Must(err)
 
 			msg := "this is a test"
@@ -71,6 +80,6 @@ func start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, gen *rsa.G
 		op = "verified keys"
 	}
 
-	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	opts := &runner.Options{Lifecycle: params.Lifecycle, Logger: params.Logger, Fn: fn}
 	runner.Start("rsa", op, opts)
 }

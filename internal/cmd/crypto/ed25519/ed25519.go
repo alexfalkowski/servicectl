@@ -9,6 +9,7 @@ import (
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
+	cf "github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/os"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/alexfalkowski/servicectl/internal/config"
@@ -20,42 +21,49 @@ import (
 func Register(command *sc.Command) {
 	flags := flags.NewFlagSet("ed25519")
 
-	command.RegisterInput(flags, "")
-	rotate = flags.BoolP("rotate", "r", false, "rotate key")
-	verify = flags.BoolP("verify", "v", false, "verify key")
+	flags.AddInput("")
+	flags.BoolP("rotate", "r", false, "rotate key")
+	flags.BoolP("verify", "v", false, "verify key")
 
-	command.AddClient("ed25519", "Ed25519 crypto.", flags, cmd.Module, fx.Invoke(start))
+	command.AddClient("ed25519", "Ed25519 crypto.", flags, cmd.Module, fx.Invoke(Start))
 }
 
-var (
-	rotate = flags.Bool()
-	verify = flags.Bool()
-)
+// StartParams for ed25519.
+type StartParams struct {
+	fx.In
 
-func start(lc fx.Lifecycle, logger *zap.Logger, gen *ed25519.Generator, cfg *config.Config) {
+	Set       *flags.FlagSet
+	Lifecycle fx.Lifecycle
+	Logger    *zap.Logger
+	Generator *ed25519.Generator
+	Config    *config.Config
+}
+
+// Start for ed25519.
+func Start(params StartParams) {
 	var (
 		fn runner.StartFn
 		op string
 	)
 
 	switch {
-	case flags.IsBoolSet(rotate):
+	case cf.IsSet(params.Set, "rotate"):
 		fn = func(ctx context.Context) context.Context {
-			pub, pri, err := gen.Generate()
+			pub, pri, err := params.Generator.Generate()
 			runtime.Must(err)
 
-			err = os.WriteFile(cfg.Crypto.Ed25519.Public, []byte(pub))
+			err = os.WriteFile(params.Config.Crypto.Ed25519.Public, []byte(pub))
 			runtime.Must(err)
 
-			err = os.WriteFile(cfg.Crypto.Ed25519.Private, []byte(pri))
+			err = os.WriteFile(params.Config.Crypto.Ed25519.Private, []byte(pri))
 			runtime.Must(err)
 
 			return ctx
 		}
 		op = "rotated keys"
-	case flags.IsBoolSet(verify):
+	case cf.IsSet(params.Set, "verify"):
 		fn = func(ctx context.Context) context.Context {
-			a, err := ed25519.NewSigner(cfg.Crypto.Ed25519)
+			a, err := ed25519.NewSigner(params.Config.Crypto.Ed25519)
 			runtime.Must(err)
 
 			msg := "this is a test"
@@ -71,6 +79,6 @@ func start(lc fx.Lifecycle, logger *zap.Logger, gen *ed25519.Generator, cfg *con
 		op = "verified keys"
 	}
 
-	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	opts := &runner.Options{Lifecycle: params.Lifecycle, Logger: params.Logger, Fn: fn}
 	runner.Start("ed25519", op, opts)
 }
