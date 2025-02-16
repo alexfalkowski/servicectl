@@ -22,15 +22,17 @@ import (
 
 // Register for hooks.
 func Register(command *sc.Command) {
-	client := command.AddClient("hooks", "Webhooks.", cmd.Module, h.Module, fx.Invoke(start))
+	flags := flags.NewFlagSet("hooks")
 
-	flags.BoolVar(client, rotate, "rotate", "r", false, "rotate secret")
-	flags.BoolVar(client, verify, "verify", "v", false, "verify webhook")
+	command.RegisterInput(flags, "")
+	rotate = flags.BoolP("rotate", "r", false, "rotate secret")
+	verify = flags.BoolP("verify", "v", false, "verify webhook")
+
+	command.AddClient("hooks", "Webhooks.", flags, cmd.Module, h.Module, fx.Invoke(start))
 }
 
 var (
 	rotate = flags.Bool()
-
 	verify = flags.Bool()
 )
 

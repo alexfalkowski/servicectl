@@ -14,9 +14,12 @@ import (
 
 // Register for http.
 func Register(command *sc.Command) {
-	client := command.AddClient("http", "HTTP Server.", cmd.Module, limiter.Module, meta.Module, http.Module, fx.Invoke(start))
+	flags := flags.NewFlagSet("http")
 
-	flags.BoolVar(client, verify, "verify", "v", false, "verify server")
+	command.RegisterInput(flags, "")
+	verify = flags.BoolP("verify", "v", false, "verify server")
+
+	command.AddClient("http", "HTTP Server.", flags, cmd.Module, limiter.Module, meta.Module, http.Module, fx.Invoke(start))
 }
 
 var verify = flags.Bool()
