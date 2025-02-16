@@ -6,10 +6,9 @@ import (
 
 	sc "github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/database/sql/pg"
-	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
-	cf "github.com/alexfalkowski/servicectl/internal/cmd/flags"
+	"github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/linxGnu/mssqlx"
 	"go.uber.org/fx"
@@ -18,7 +17,7 @@ import (
 
 // Register for sql.
 func Register(command *sc.Command) {
-	flags := flags.NewFlagSet("pg")
+	flags := sc.NewFlagSet("pg")
 
 	flags.AddInput("")
 	flags.BoolP("verify", "v", false, "verify connection")
@@ -30,7 +29,7 @@ func Register(command *sc.Command) {
 type StartParams struct {
 	fx.In
 
-	Set       *flags.FlagSet
+	Set       *sc.FlagSet
 	Lifecycle fx.Lifecycle
 	Logger    *zap.Logger
 	DB        *mssqlx.DBs
@@ -46,7 +45,7 @@ func Start(params StartParams) {
 	)
 
 	switch {
-	case cf.IsSet(params.Set, "verify"):
+	case flags.IsSet(params.Set, "verify"):
 		fn = func(ctx context.Context) context.Context {
 			err := errors.Join(params.DB.Ping()...)
 			runtime.Must(err)

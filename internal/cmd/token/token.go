@@ -6,11 +6,10 @@ import (
 	sc "github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/crypto/rand"
 	"github.com/alexfalkowski/go-service/env"
-	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/go-service/token"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
-	cf "github.com/alexfalkowski/servicectl/internal/cmd/flags"
+	"github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/os"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/alexfalkowski/servicectl/internal/config"
@@ -20,7 +19,7 @@ import (
 
 // Register for token.
 func Register(command *sc.Command) {
-	flags := flags.NewFlagSet("token")
+	flags := sc.NewFlagSet("token")
 
 	flags.AddInput("")
 	flags.BoolP("rotate", "r", false, "rotate secret")
@@ -32,7 +31,7 @@ func Register(command *sc.Command) {
 type StartParams struct {
 	fx.In
 	Lifecycle fx.Lifecycle
-	Set       *flags.FlagSet
+	Set       *sc.FlagSet
 	Logger    *zap.Logger
 	Generator *rand.Generator
 	Config    *config.Config
@@ -49,7 +48,7 @@ func Start(params StartParams) {
 	)
 
 	switch {
-	case cf.IsSet(params.Set, "rotate"):
+	case flags.IsSet(params.Set, "rotate"):
 		fn = func(ctx context.Context) context.Context {
 			switch params.Config.Token.Kind {
 			case "key":
