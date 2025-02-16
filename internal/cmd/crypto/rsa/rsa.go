@@ -19,15 +19,17 @@ import (
 
 // Register for rsa.
 func Register(command *sc.Command) {
-	client := command.AddClient("rsa", "RSA crypto.", cmd.Module, fx.Invoke(start))
+	flags := flags.NewFlagSet("rsa")
 
-	flags.BoolVar(client, rotate, "rotate", "r", false, "rotate key")
-	flags.BoolVar(client, verify, "verify", "v", false, "verify key")
+	command.RegisterInput(flags, "")
+	rotate = flags.BoolP("rotate", "r", false, "rotate key")
+	verify = flags.BoolP("verify", "v", false, "verify key")
+
+	command.AddClient("rsa", "RSA crypto.", flags, cmd.Module, fx.Invoke(start))
 }
 
 var (
 	rotate = flags.Bool()
-
 	verify = flags.Bool()
 )
 

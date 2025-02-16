@@ -14,9 +14,12 @@ import (
 
 // Register for grpc.
 func Register(command *sc.Command) {
-	client := command.AddClient("grpc", "gRPC Server.", cmd.Module, limiter.Module, meta.Module, grpc.Module, fx.Invoke(start))
+	flags := flags.NewFlagSet("grpc")
 
-	flags.BoolVar(client, verify, "verify", "v", false, "verify server")
+	command.RegisterInput(flags, "")
+	verify = flags.BoolP("verify", "v", false, "verify server")
+
+	command.AddClient("grpc", "gRPC Server.", flags, cmd.Module, limiter.Module, meta.Module, grpc.Module, fx.Invoke(start))
 }
 
 var verify = flags.Bool()

@@ -18,15 +18,17 @@ import (
 
 // Register for ed25519.
 func Register(command *sc.Command) {
-	client := command.AddClient("ed25519", "Ed25519 crypto.", cmd.Module, fx.Invoke(start))
+	flags := flags.NewFlagSet("ed25519")
 
-	flags.BoolVar(client, rotate, "rotate", "r", false, "rotate key")
-	flags.BoolVar(client, verify, "verify", "v", false, "verify key")
+	command.RegisterInput(flags, "")
+	rotate = flags.BoolP("rotate", "r", false, "rotate key")
+	verify = flags.BoolP("verify", "v", false, "verify key")
+
+	command.AddClient("ed25519", "Ed25519 crypto.", flags, cmd.Module, fx.Invoke(start))
 }
 
 var (
 	rotate = flags.Bool()
-
 	verify = flags.Bool()
 )
 
