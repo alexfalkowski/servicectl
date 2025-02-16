@@ -17,9 +17,12 @@ import (
 
 // Register for sql.
 func Register(command *sc.Command) {
-	client := command.AddClient("pg", "Postgres DB.", cmd.Module, pg.Module, fx.Invoke(start))
+	flags := flags.NewFlagSet("pg")
 
-	flags.BoolVar(client, verify, "verify", "v", false, "verify connection")
+	command.RegisterInput(flags, "")
+	verify = flags.BoolP("verify", "v", false, "verify connection")
+
+	command.AddClient("pg", "Postgres DB.", flags, cmd.Module, pg.Module, fx.Invoke(start))
 }
 
 var verify = flags.Bool()

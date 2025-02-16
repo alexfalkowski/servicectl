@@ -20,7 +20,6 @@ func main() {
 
 func command() *cmd.Command {
 	command := cmd.New(env.NewVersion().String())
-	command.RegisterInput(command.Root(), "")
 
 	aes.Register(command)
 	hmac.Register(command)

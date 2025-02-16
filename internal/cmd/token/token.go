@@ -19,9 +19,12 @@ import (
 
 // Register for token.
 func Register(command *sc.Command) {
-	client := command.AddClient("token", "Security tokens.", cmd.Module, token.Module, fx.Invoke(start))
+	flags := flags.NewFlagSet("token")
 
-	flags.BoolVar(client, rotate, "rotate", "r", false, "rotate secret")
+	command.RegisterInput(flags, "")
+	rotate = flags.BoolP("rotate", "r", false, "rotate secret")
+
+	command.AddClient("token", "Security tokens.", flags, cmd.Module, token.Module, fx.Invoke(start))
 }
 
 var rotate = flags.Bool()

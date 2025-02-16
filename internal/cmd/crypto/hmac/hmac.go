@@ -18,15 +18,17 @@ import (
 
 // Register for hmac.
 func Register(command *sc.Command) {
-	client := command.AddClient("hmac", "HMAC crypto.", cmd.Module, fx.Invoke(start))
+	flags := flags.NewFlagSet("hmac")
 
-	flags.BoolVar(client, rotate, "rotate", "r", false, "rotate key")
-	flags.BoolVar(client, verify, "verify", "v", false, "verify key")
+	command.RegisterInput(flags, "")
+	rotate = flags.BoolP("rotate", "r", false, "rotate key")
+	verify = flags.BoolP("verify", "v", false, "verify key")
+
+	command.AddClient("hmac", "HMAC crypto.", flags, cmd.Module, fx.Invoke(start))
 }
 
 var (
 	rotate = flags.Bool()
-
 	verify = flags.Bool()
 )
 
