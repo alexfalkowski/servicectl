@@ -6,7 +6,6 @@ import (
 	sc "github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/crypto/rand"
 	"github.com/alexfalkowski/go-service/crypto/rsa"
-	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
@@ -20,7 +19,7 @@ import (
 
 // Register for rsa.
 func Register(command *sc.Command) {
-	flags := flags.NewFlagSet("rsa")
+	flags := sc.NewFlagSet("rsa")
 
 	flags.AddInput("")
 	flags.BoolP("rotate", "r", false, "rotate key")
@@ -33,7 +32,7 @@ func Register(command *sc.Command) {
 type StartParams struct {
 	fx.In
 
-	Set       *flags.FlagSet
+	Set       *sc.FlagSet
 	Lifecycle fx.Lifecycle
 	Logger    *zap.Logger
 	Random    *rand.Generator

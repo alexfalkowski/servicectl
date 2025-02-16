@@ -7,12 +7,11 @@ import (
 	"time"
 
 	sc "github.com/alexfalkowski/go-service/cmd"
-	"github.com/alexfalkowski/go-service/flags"
 	h "github.com/alexfalkowski/go-service/hooks"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
-	cf "github.com/alexfalkowski/servicectl/internal/cmd/flags"
+	"github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/os"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/alexfalkowski/servicectl/internal/config"
@@ -23,7 +22,7 @@ import (
 
 // Register for hooks.
 func Register(command *sc.Command) {
-	flags := flags.NewFlagSet("hooks")
+	flags := sc.NewFlagSet("hooks")
 
 	flags.AddInput("")
 	flags.BoolP("rotate", "r", false, "rotate secret")
@@ -36,7 +35,7 @@ func Register(command *sc.Command) {
 type StartParams struct {
 	fx.In
 
-	Set       *flags.FlagSet
+	Set       *sc.FlagSet
 	Lifecycle fx.Lifecycle
 	Logger    *zap.Logger
 	Generator *h.Generator
@@ -52,7 +51,7 @@ func Start(params StartParams) {
 	)
 
 	switch {
-	case cf.IsSet(params.Set, "rotate"):
+	case flags.IsSet(params.Set, "rotate"):
 		fn = func(ctx context.Context) context.Context {
 			s, err := params.Generator.Generate()
 			runtime.Must(err)
@@ -63,7 +62,7 @@ func Start(params StartParams) {
 			return ctx
 		}
 		op = "rotated secret"
-	case cf.IsSet(params.Set, "verify"):
+	case flags.IsSet(params.Set, "verify"):
 		fn = func(ctx context.Context) context.Context {
 			id, ts, p := "test", time.Now(), []byte("test")
 

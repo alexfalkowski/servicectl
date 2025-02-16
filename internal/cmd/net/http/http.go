@@ -2,12 +2,11 @@ package http
 
 import (
 	sc "github.com/alexfalkowski/go-service/cmd"
-	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/limiter"
 	"github.com/alexfalkowski/go-service/transport/http"
 	"github.com/alexfalkowski/go-service/transport/meta"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
-	cf "github.com/alexfalkowski/servicectl/internal/cmd/flags"
+	"github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
@@ -15,7 +14,7 @@ import (
 
 // Register for http.
 func Register(command *sc.Command) {
-	flags := flags.NewFlagSet("http")
+	flags := sc.NewFlagSet("http")
 
 	flags.AddInput("")
 	flags.BoolP("verify", "v", false, "verify server")
@@ -27,7 +26,7 @@ func Register(command *sc.Command) {
 type StartParams struct {
 	fx.In
 
-	Set       *flags.FlagSet
+	Set       *sc.FlagSet
 	Lifecycle fx.Lifecycle
 	Logger    *zap.Logger
 	Server    *http.Server
@@ -43,7 +42,7 @@ func Start(params StartParams) {
 	)
 
 	switch {
-	case cf.IsSet(params.Set, "verify"):
+	case flags.IsSet(params.Set, "verify"):
 		fn = runner.NoStart
 		op = "started"
 	}

@@ -6,12 +6,11 @@ import (
 	sc "github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/crypto/aes"
 	"github.com/alexfalkowski/go-service/crypto/rand"
-	"github.com/alexfalkowski/go-service/flags"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/go-service/token"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
-	cf "github.com/alexfalkowski/servicectl/internal/cmd/flags"
+	"github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/os"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/alexfalkowski/servicectl/internal/config"
@@ -21,7 +20,7 @@ import (
 
 // Register for aes.
 func Register(command *sc.Command) {
-	flags := flags.NewFlagSet("aes")
+	flags := sc.NewFlagSet("aes")
 
 	flags.AddInput("")
 	flags.BoolP("rotate", "r", false, "rotate key")
@@ -34,7 +33,7 @@ func Register(command *sc.Command) {
 type StartParams struct {
 	fx.In
 
-	Set       *flags.FlagSet
+	Set       *sc.FlagSet
 	Lifecycle fx.Lifecycle
 	Logger    *zap.Logger
 	Random    *rand.Generator
@@ -50,7 +49,7 @@ func Start(params StartParams) {
 	)
 
 	switch {
-	case cf.IsSet(params.Set, "rotate"):
+	case flags.IsSet(params.Set, "rotate"):
 		fn = func(ctx context.Context) context.Context {
 			k, err := params.Generator.Generate()
 			runtime.Must(err)
@@ -61,7 +60,7 @@ func Start(params StartParams) {
 			return ctx
 		}
 		op = "rotated key"
-	case cf.IsSet(params.Set, "verify"):
+	case flags.IsSet(params.Set, "verify"):
 		fn = func(ctx context.Context) context.Context {
 			a, err := aes.NewCipher(params.Random, params.Config.Crypto.AES)
 			runtime.Must(err)
