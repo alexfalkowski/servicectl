@@ -9,6 +9,7 @@ import (
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
+	cf "github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/os"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/alexfalkowski/servicectl/internal/config"
@@ -20,39 +21,46 @@ import (
 func Register(command *sc.Command) {
 	flags := flags.NewFlagSet("hmac")
 
-	command.RegisterInput(flags, "")
-	rotate = flags.BoolP("rotate", "r", false, "rotate key")
-	verify = flags.BoolP("verify", "v", false, "verify key")
+	flags.AddInput("")
+	flags.BoolP("rotate", "r", false, "rotate key")
+	flags.BoolP("verify", "v", false, "verify key")
 
-	command.AddClient("hmac", "HMAC crypto.", flags, cmd.Module, fx.Invoke(start))
+	command.AddClient("hmac", "HMAC crypto.", flags, cmd.Module, fx.Invoke(Start))
 }
 
-var (
-	rotate = flags.Bool()
-	verify = flags.Bool()
-)
+// StartParams for hmac.
+type StartParams struct {
+	fx.In
 
-func start(lc fx.Lifecycle, logger *zap.Logger, gen *hmac.Generator, cfg *config.Config) {
+	Set       *flags.FlagSet
+	Lifecycle fx.Lifecycle
+	Logger    *zap.Logger
+	Generator *hmac.Generator
+	Config    *config.Config
+}
+
+// Start for hmac.
+func Start(params StartParams) {
 	var (
 		fn runner.StartFn
 		op string
 	)
 
 	switch {
-	case flags.IsBoolSet(rotate):
+	case cf.IsSet(params.Set, "rotate"):
 		fn = func(ctx context.Context) context.Context {
-			k, err := gen.Generate()
+			k, err := params.Generator.Generate()
 			runtime.Must(err)
 
-			err = os.WriteBase64File(cfg.Crypto.HMAC.Key, []byte(k))
+			err = os.WriteBase64File(params.Config.Crypto.HMAC.Key, []byte(k))
 			runtime.Must(err)
 
 			return ctx
 		}
 		op = "rotated key"
-	case flags.IsBoolSet(verify):
+	case cf.IsSet(params.Set, "verify"):
 		fn = func(ctx context.Context) context.Context {
-			a, err := hmac.NewSigner(cfg.Crypto.HMAC)
+			a, err := hmac.NewSigner(params.Config.Crypto.HMAC)
 			runtime.Must(err)
 
 			msg := "this is a test"
@@ -68,6 +76,6 @@ func start(lc fx.Lifecycle, logger *zap.Logger, gen *hmac.Generator, cfg *config
 		op = "verified key"
 	}
 
-	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	opts := &runner.Options{Lifecycle: params.Lifecycle, Logger: params.Logger, Fn: fn}
 	runner.Start("hmac", op, opts)
 }

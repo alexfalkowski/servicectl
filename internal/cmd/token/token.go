@@ -10,6 +10,7 @@ import (
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/go-service/token"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
+	cf "github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/os"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/alexfalkowski/servicectl/internal/config"
@@ -21,44 +22,55 @@ import (
 func Register(command *sc.Command) {
 	flags := flags.NewFlagSet("token")
 
-	command.RegisterInput(flags, "")
-	rotate = flags.BoolP("rotate", "r", false, "rotate secret")
+	flags.AddInput("")
+	flags.BoolP("rotate", "r", false, "rotate secret")
 
-	command.AddClient("token", "Security tokens.", flags, cmd.Module, token.Module, fx.Invoke(start))
+	command.AddClient("token", "Security tokens.", flags, cmd.Module, token.Module, fx.Invoke(Start))
 }
 
-var rotate = flags.Bool()
+// StartParams for token.
+type StartParams struct {
+	fx.In
+	Lifecycle fx.Lifecycle
+	Set       *flags.FlagSet
+	Logger    *zap.Logger
+	Generator *rand.Generator
+	Config    *config.Config
+	Name      env.Name
+}
 
+// Start for token.
+//
 //nolint:gocritic
-func start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, cfg *config.Config, name env.Name) {
+func Start(params StartParams) {
 	var (
 		fn runner.StartFn
 		op string
 	)
 
 	switch {
-	case flags.IsBoolSet(rotate):
+	case cf.IsSet(params.Set, "rotate"):
 		fn = func(ctx context.Context) context.Context {
-			switch cfg.Token.Kind {
+			switch params.Config.Token.Kind {
 			case "key":
-				k, err := rand.GenerateString(64)
+				k, err := params.Generator.GenerateString(64)
 				runtime.Must(err)
 
-				err = os.WriteBase64File(cfg.Token.Secret, []byte(k))
+				err = os.WriteBase64File(params.Config.Token.Secret, []byte(k))
 				runtime.Must(err)
 			case "token":
-				k, err := token.Generate(name, rand)
+				k, err := token.Generate(params.Name, params.Generator)
 				runtime.Must(err)
 
-				err = os.WriteFile(cfg.Token.Secret, []byte(k))
+				err = os.WriteFile(params.Config.Token.Secret, []byte(k))
 				runtime.Must(err)
 			}
 
 			return ctx
 		}
-		op = "rotated " + cfg.Token.Kind
+		op = "rotated " + params.Config.Token.Kind
 	}
 
-	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	opts := &runner.Options{Lifecycle: params.Lifecycle, Logger: params.Logger, Fn: fn}
 	runner.Start("token", op, opts)
 }

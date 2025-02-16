@@ -11,6 +11,7 @@ import (
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/go-service/token"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
+	cf "github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/os"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/alexfalkowski/servicectl/internal/config"
@@ -22,39 +23,47 @@ import (
 func Register(command *sc.Command) {
 	flags := flags.NewFlagSet("aes")
 
-	command.RegisterInput(flags, "")
-	rotate = flags.BoolP("rotate", "r", false, "rotate key")
-	verify = flags.BoolP("verify", "v", false, "verify key")
+	flags.AddInput("")
+	flags.BoolP("rotate", "r", false, "rotate key")
+	flags.BoolP("verify", "v", false, "verify key")
 
-	command.AddClient("aes", "AES crypto.", flags, cmd.Module, token.Module, fx.Invoke(start))
+	command.AddClient("aes", "AES crypto.", flags, cmd.Module, token.Module, fx.Invoke(Start))
 }
 
-var (
-	rotate = flags.Bool()
-	verify = flags.Bool()
-)
+// StartParams for aes.
+type StartParams struct {
+	fx.In
 
-func start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, gen *aes.Generator, cfg *config.Config) {
+	Set       *flags.FlagSet
+	Lifecycle fx.Lifecycle
+	Logger    *zap.Logger
+	Random    *rand.Generator
+	Generator *aes.Generator
+	Config    *config.Config
+}
+
+// Start for aes.
+func Start(params StartParams) {
 	var (
 		fn runner.StartFn
 		op string
 	)
 
 	switch {
-	case flags.IsBoolSet(rotate):
+	case cf.IsSet(params.Set, "rotate"):
 		fn = func(ctx context.Context) context.Context {
-			k, err := gen.Generate()
+			k, err := params.Generator.Generate()
 			runtime.Must(err)
 
-			err = os.WriteBase64File(cfg.Crypto.AES.Key, []byte(k))
+			err = os.WriteBase64File(params.Config.Crypto.AES.Key, []byte(k))
 			runtime.Must(err)
 
 			return ctx
 		}
 		op = "rotated key"
-	case flags.IsBoolSet(verify):
+	case cf.IsSet(params.Set, "verify"):
 		fn = func(ctx context.Context) context.Context {
-			a, err := aes.NewCipher(rand, cfg.Crypto.AES)
+			a, err := aes.NewCipher(params.Random, params.Config.Crypto.AES)
 			runtime.Must(err)
 
 			msg := "this is a test"
@@ -69,6 +78,6 @@ func start(lc fx.Lifecycle, logger *zap.Logger, rand *rand.Generator, gen *aes.G
 		op = "verified key"
 	}
 
-	opts := &runner.Options{Lifecycle: lc, Logger: logger, Fn: fn}
+	opts := &runner.Options{Lifecycle: params.Lifecycle, Logger: params.Logger, Fn: fn}
 	runner.Start("aes", op, opts)
 }
