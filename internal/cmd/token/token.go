@@ -58,10 +58,9 @@ func Start(params StartParams) {
 				err = os.WriteBase64File(params.Config.Token.Secret, []byte(k))
 				runtime.Must(err)
 			case "token":
-				k, err := token.Generate(params.Name, params.Generator)
-				runtime.Must(err)
+				k := token.Generate(params.Name, params.Generator)
 
-				err = os.WriteFile(params.Config.Token.Secret, []byte(k))
+				err := os.WriteFile(params.Config.Token.Secret, []byte(k))
 				runtime.Must(err)
 			}
 
