@@ -1,7 +1,0 @@
-environment: development
-telemetry:
-  logger:
-    level: info
-token:
-  kind: key
-  secret: secrets/key
