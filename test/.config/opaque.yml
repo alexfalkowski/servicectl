@@ -3,5 +3,5 @@ telemetry:
   logger:
     level: info
 token:
-  kind: token
-  secret: secrets/token
+  kind: opaque
+  secret: secrets/opaque
