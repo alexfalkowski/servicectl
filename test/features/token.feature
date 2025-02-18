@@ -8,5 +8,4 @@ Feature: Token
 
     Examples:
       | kind  |
-      | key   |
       | token |

@@ -51,14 +51,8 @@ func Start(params StartParams) {
 	case flags.IsSet(params.Set, "rotate"):
 		fn = func(ctx context.Context) context.Context {
 			switch params.Config.Token.Kind {
-			case "key":
-				k, err := params.Generator.GenerateString(64)
-				runtime.Must(err)
-
-				err = os.WriteBase64File(params.Config.Token.Secret, []byte(k))
-				runtime.Must(err)
 			case "token":
-				k := token.Generate(params.Name, params.Generator)
+				k := token.GenerateToken(params.Name, params.Generator)
 
 				err := os.WriteFile(params.Config.Token.Secret, []byte(k))
 				runtime.Must(err)
