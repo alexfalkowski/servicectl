@@ -7,5 +7,5 @@ Feature: Token
     And I should see a log entry of "token: successfully rotated <kind>" in the file "reports/token.log"
 
     Examples:
-      | kind  |
-      | token |
+      | kind   |
+      | opaque |

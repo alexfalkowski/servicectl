@@ -4,8 +4,6 @@ import (
 	"context"
 
 	sc "github.com/alexfalkowski/go-service/cmd"
-	"github.com/alexfalkowski/go-service/crypto/rand"
-	"github.com/alexfalkowski/go-service/env"
 	"github.com/alexfalkowski/go-service/runtime"
 	"github.com/alexfalkowski/go-service/token"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
@@ -30,12 +28,12 @@ func Register(command *sc.Command) {
 // StartParams for token.
 type StartParams struct {
 	fx.In
+
 	Lifecycle fx.Lifecycle
 	Set       *sc.FlagSet
 	Logger    *zap.Logger
-	Generator *rand.Generator
+	Opaque    *token.Opaque
 	Config    *config.Config
-	Name      env.Name
 }
 
 // Start for token.
@@ -51,8 +49,8 @@ func Start(params StartParams) {
 	case flags.IsSet(params.Set, "rotate"):
 		fn = func(ctx context.Context) context.Context {
 			switch params.Config.Token.Kind {
-			case "token":
-				k := token.GenerateToken(params.Name, params.Generator)
+			case "opaque":
+				k := params.Opaque.Generate()
 
 				err := os.WriteFile(params.Config.Token.Secret, []byte(k))
 				runtime.Must(err)
