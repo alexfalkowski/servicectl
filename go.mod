@@ -3,9 +3,9 @@ module github.com/alexfalkowski/servicectl
 go 1.24.0
 
 require (
-	github.com/alexfalkowski/go-service v1.446.0
+	github.com/alexfalkowski/go-service v1.447.0
 	github.com/linxGnu/mssqlx v1.1.8
-	github.com/standard-webhooks/standard-webhooks/libraries v0.0.0-20250130150621-c1b941e3a055
+	github.com/standard-webhooks/standard-webhooks/libraries v0.0.0-20250216154903-8707e00bdbae
 	go.uber.org/fx v1.23.0
 	go.uber.org/zap v1.27.0
 )
@@ -42,7 +42,7 @@ require (
 	github.com/google/pprof v0.0.0-20240227163752-401108e1b7e7 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/websocket v1.5.1 // indirect
-	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.2.0 // indirect
+	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.25.1 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
