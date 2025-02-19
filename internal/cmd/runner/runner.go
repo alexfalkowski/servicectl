@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/alexfalkowski/go-service/cmd"
-	tz "github.com/alexfalkowski/go-service/telemetry/logger/zap"
+	"github.com/alexfalkowski/go-service/telemetry/logger"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 )
@@ -29,6 +29,6 @@ func Start(name, operation string, opts *Options) {
 		ctx = opts.Fn(ctx)
 		msg := fmt.Sprintf("%s: successfully %s", name, operation)
 
-		opts.Logger.Info(msg, tz.Meta(ctx)...)
+		opts.Logger.Info(msg, logger.Meta(ctx)...)
 	})
 }
