@@ -3,13 +3,13 @@ package http
 import (
 	sc "github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/limiter"
+	"github.com/alexfalkowski/go-service/telemetry/logger"
 	"github.com/alexfalkowski/go-service/transport/http"
 	"github.com/alexfalkowski/go-service/transport/meta"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
 	"github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"go.uber.org/fx"
-	"go.uber.org/zap"
 )
 
 // Register for http.
@@ -28,7 +28,7 @@ type StartParams struct {
 
 	Set       *sc.FlagSet
 	Lifecycle fx.Lifecycle
-	Logger    *zap.Logger
+	Logger    *logger.Logger
 	Server    *http.Server
 }
 

@@ -7,7 +7,6 @@ import (
 	"github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/telemetry/logger"
 	"go.uber.org/fx"
-	"go.uber.org/zap"
 )
 
 // StartFn for cmd.
@@ -19,7 +18,7 @@ var NoStart = func(ctx context.Context) context.Context { return ctx }
 // Options for runner.
 type Options struct {
 	Lifecycle fx.Lifecycle
-	Logger    *zap.Logger
+	Logger    *logger.Logger
 	Fn        StartFn
 }
 
