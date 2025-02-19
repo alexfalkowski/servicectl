@@ -8,13 +8,13 @@ import (
 	"github.com/alexfalkowski/go-service/crypto/rsa"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
+	"github.com/alexfalkowski/go-service/telemetry/logger"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
 	cf "github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/os"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/alexfalkowski/servicectl/internal/config"
 	"go.uber.org/fx"
-	"go.uber.org/zap"
 )
 
 // Register for rsa.
@@ -34,7 +34,7 @@ type StartParams struct {
 
 	Set       *sc.FlagSet
 	Lifecycle fx.Lifecycle
-	Logger    *zap.Logger
+	Logger    *logger.Logger
 	Random    *rand.Generator
 	Generator *rsa.Generator
 	Config    *config.Config

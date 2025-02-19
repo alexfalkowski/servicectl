@@ -7,12 +7,12 @@ import (
 	sc "github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/database/sql/pg"
 	"github.com/alexfalkowski/go-service/runtime"
+	"github.com/alexfalkowski/go-service/telemetry/logger"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
 	"github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/linxGnu/mssqlx"
 	"go.uber.org/fx"
-	"go.uber.org/zap"
 )
 
 // Register for sql.
@@ -31,7 +31,7 @@ type StartParams struct {
 
 	Set       *sc.FlagSet
 	Lifecycle fx.Lifecycle
-	Logger    *zap.Logger
+	Logger    *logger.Logger
 	DB        *mssqlx.DBs
 }
 

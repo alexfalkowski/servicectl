@@ -10,6 +10,7 @@ import (
 	h "github.com/alexfalkowski/go-service/hooks"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
+	"github.com/alexfalkowski/go-service/telemetry/logger"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
 	"github.com/alexfalkowski/servicectl/internal/cmd/flags"
 	"github.com/alexfalkowski/servicectl/internal/cmd/os"
@@ -17,7 +18,6 @@ import (
 	"github.com/alexfalkowski/servicectl/internal/config"
 	hooks "github.com/standard-webhooks/standard-webhooks/libraries/go"
 	"go.uber.org/fx"
-	"go.uber.org/zap"
 )
 
 // Register for hooks.
@@ -37,7 +37,7 @@ type StartParams struct {
 
 	Set       *sc.FlagSet
 	Lifecycle fx.Lifecycle
-	Logger    *zap.Logger
+	Logger    *logger.Logger
 	Generator *h.Generator
 	Hook      *hooks.Webhook
 	Config    *config.Config

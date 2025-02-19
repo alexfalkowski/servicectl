@@ -8,6 +8,7 @@ import (
 	"github.com/alexfalkowski/go-service/crypto/rand"
 	"github.com/alexfalkowski/go-service/meta"
 	"github.com/alexfalkowski/go-service/runtime"
+	"github.com/alexfalkowski/go-service/telemetry/logger"
 	"github.com/alexfalkowski/go-service/token"
 	"github.com/alexfalkowski/servicectl/internal/cmd"
 	"github.com/alexfalkowski/servicectl/internal/cmd/flags"
@@ -15,7 +16,6 @@ import (
 	"github.com/alexfalkowski/servicectl/internal/cmd/runner"
 	"github.com/alexfalkowski/servicectl/internal/config"
 	"go.uber.org/fx"
-	"go.uber.org/zap"
 )
 
 // Register for aes.
@@ -35,7 +35,7 @@ type StartParams struct {
 
 	Set       *sc.FlagSet
 	Lifecycle fx.Lifecycle
-	Logger    *zap.Logger
+	Logger    *logger.Logger
 	Random    *rand.Generator
 	Generator *aes.Generator
 	Config    *config.Config
