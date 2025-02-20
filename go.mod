@@ -3,7 +3,7 @@ module github.com/alexfalkowski/servicectl
 go 1.24.0
 
 require (
-	github.com/alexfalkowski/go-service v1.458.0
+	github.com/alexfalkowski/go-service v1.459.0
 	github.com/linxGnu/mssqlx v1.1.8
 	github.com/standard-webhooks/standard-webhooks/libraries v0.0.0-20250216154903-8707e00bdbae
 	go.uber.org/fx v1.23.0
@@ -54,7 +54,7 @@ require (
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jmoiron/sqlx v1.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.17.11 // indirect
+	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/lib/pq v1.10.9 // indirect
 	github.com/lufia/plan9stats v0.0.0-20240909124753-873cd0166683 // indirect
 	github.com/matoous/go-nanoid v1.5.1 // indirect
