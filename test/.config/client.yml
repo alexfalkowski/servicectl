@@ -31,6 +31,7 @@ sql:
     conn_max_lifetime: 1h
 telemetry:
   logger:
+    kind: stdout
     level: info
 transport:
   http:
