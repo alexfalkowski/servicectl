@@ -1,6 +1,7 @@
 environment: development
 telemetry:
   logger:
+    kind: stdout
     level: info
 token:
   kind: opaque
