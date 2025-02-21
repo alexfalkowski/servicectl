@@ -3,7 +3,6 @@ package runner
 import (
 	"context"
 	"fmt"
-	"log/slog"
 
 	"github.com/alexfalkowski/go-service/cmd"
 	"github.com/alexfalkowski/go-service/telemetry/logger"
@@ -29,6 +28,6 @@ func Start(name, operation string, opts *Options) {
 		ctx = opts.Fn(ctx)
 		msg := fmt.Sprintf("%s: successfully %s", name, operation)
 
-		opts.Logger.LogAttrs(ctx, slog.LevelInfo, msg, nil)
+		opts.Logger.Log(ctx, logger.NewText(msg))
 	})
 }
